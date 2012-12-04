@@ -7,7 +7,9 @@ package SuperMap
 	import SuperMap.lib_Ajax.JsStream;
 	import SuperMap.lib_Ajax.MicrosoftAjaxStream;
 	import SuperMap.lib_Realspace.RealspaceStream;
-
+	/**
+	 * 此类主要用于以字符串形式获取二进制形式的js代码
+	 */
 	public class IncludeStream 
 	{
 		public function IncludeStream() 
