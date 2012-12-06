@@ -46,7 +46,7 @@ package SuperMap.Web.Realspace
 				isNew:true,
 				key:this.KEY,
 					functionName:"flyTo",
-					isReturn:"false",
+					isReturn:false,
 					realArgument:realArgument
 			};
 			this.flexToJsCall(array);
@@ -67,7 +67,7 @@ package SuperMap.Web.Realspace
 				isNew:true,
 				key:this.KEY,
 					functionName:"flyToBounds",
-					isReturn:"false",
+					isReturn:false,
 					realArgument:realArgument
 			};
 			this.flexToJsCall(array);

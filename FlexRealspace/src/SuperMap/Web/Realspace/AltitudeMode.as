@@ -1,7 +1,6 @@
 package SuperMap.Web.Realspace
 {
 	import SuperMap.Web.Util.Enum;
-
 	/**
 	 * 高度模式常量。
 	 * 枚举类，用来设置相机或三维数据的海拔高度值。

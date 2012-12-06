@@ -34,21 +34,21 @@ package SuperMap.Web.Util
 		{
 			if(!ApplicationManager.isRegisterApp)
 			{
-				var str:String = "function parseStringToJs(str){var oHead = document.getElementsByTagName('HEAD').item(0);";
-				str+="var oScript = document.createElement(\"script\");";
-				str+="oScript.language = \"javascript\";";
-				str+="oScript.type = \"text/javascript\";";
-				str+="oScript.id = \"test\";";
-				str+="oScript.defer = true;";
-				str+="oScript.text = str;";
-				str+="oHead.appendChild(oScript);}";
-				ExternalInterface.call("eval",str);
-				var includeStream:IncludeStream=new IncludeStream();
-				var strey:String=includeStream.toString();
-				var len:Number=strey.length;
-				var char:RegExp = /\\/g;
-				strey = strey.replace(char,"\\\\");
-				ExternalInterface.call("parseStringToJs",strey);
+//				var str:String = "function parseStringToJs(str){var oHead = document.getElementsByTagName('HEAD').item(0);";
+//				str+="var oScript = document.createElement(\"script\");";
+//				str+="oScript.language = \"javascript\";";
+//				str+="oScript.type = \"text/javascript\";";
+//				str+="oScript.id = \"test\";";
+//				str+="oScript.defer = true;";
+//				str+="oScript.text = str;";
+//				str+="oHead.appendChild(oScript);}";
+//				ExternalInterface.call("eval",str);
+//				var includeStream:IncludeStream=new IncludeStream();
+//				var strey:String=includeStream.toString();
+//				var len:Number=strey.length;
+//				var char:RegExp = /\\/g;
+//				strey = strey.replace(char,"\\\\");
+//				ExternalInterface.call("parseStringToJs",strey);
 				
 				ExternalInterface.addCallback("initBridgeJsToFlex",ApplicationManager.initBridgeJsToFlex);
 				ApplicationManager.isRegisterApp=true;
@@ -58,13 +58,13 @@ package SuperMap.Web.Util
 		/**
 		 * js回调的函数在此函数中进行处理
 		 */
-		public static function initBridgeJsToFlex(key:String,params:String,array:Object):void
+		public static function initBridgeJsToFlex(key:String,event:String,array:Object):void
 		{
 			
 			if(classHashTable.find(parseInt(key)).value is ClassBase)
 			{
 				//传递给基类处理，其实传递的是之前的对象来处理
-				(classHashTable.find(parseInt(key)).value as ClassBase).jsToFlexcallback(params,ApplicationManager.parseArguments(array));
+				(classHashTable.find(parseInt(key)).value as ClassBase).jsToFlexcallback(event,ApplicationManager.parseArguments(array));
 			}
 		}
 		/**

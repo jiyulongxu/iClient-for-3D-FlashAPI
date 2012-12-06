@@ -1,7 +1,10 @@
 package SuperMap.Web.UI.Action3Ds
 {
 	import SuperMap.Web.UI.Controls.SceneControl;
+	import SuperMap.Web.Util.CallBackEvent;
 	import SuperMap.Web.Util.ClassBase;
+	
+	[Event(name="actionCompleted", type="SuperMap.Web.Util.CallBackEvent")]
 	
 	public class SceneAction extends ClassBase
 	{
@@ -105,6 +108,41 @@ package SuperMap.Web.UI.Action3Ds
 					realArgument:realArgument
 			};
 			this.flexToJsCall(array);
+		}
+		/**
+		 * 添加actionCompleted事件
+		 */
+		public function add_actionCompleted(handler:Function):void
+		{
+			addEventListener("actionCompleted",handler);
+			var realArgument:Array=["actionCompleted$Function"];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"add_actionCompleted",
+					isReturn:false,
+					realArgument:realArgument
+			};
+			this.flexToJsCall(array);
+		}
+		/**
+		 * 移除actionCompleted事件
+		 */
+		public function remove_actionCompleted(handler:Function):void
+		{
+			removeEventListener("actionCompleted",handler);
+		}
+		/**
+		 * 重写基类的回调函数
+		 * 此方法主要作用在于按照传回来的参数分发给此对象里面应该来处理的外部方法，
+		 * 并且将需要的数据传给此方法
+		 * event：事件类型，用于回调后绑定外部处理函数
+		 * array：回调的数据，提供给外部函数使用
+		 */
+		override protected function callback(event:String,array:Object):void
+		{
+			dispatchEvent(new CallBackEvent(event,false,false,array));
 		}
 	}
 }

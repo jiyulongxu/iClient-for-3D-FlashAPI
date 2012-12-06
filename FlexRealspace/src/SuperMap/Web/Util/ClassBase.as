@@ -60,10 +60,10 @@ package SuperMap.Web.Util
 		/**
 		 * 所有从js返回的操作都从这个方法出来
 		 */
-		public function jsToFlexcallback(params:String,array:Object):void
+		public function jsToFlexcallback(event:String,array:Object):void
 		{
 			//回调函数转移给如下方法处理
-			this.callback(params,array);
+			this.callback(event,array);
 		}
 		/**
 		 * 所有类向js发送操作都从基类这个方法进入
@@ -78,7 +78,7 @@ package SuperMap.Web.Util
 		/**
 		 * 回调函数处理的方法，需要每个子类重写
 		 */
-		protected function callback(params:String,array:Object):void
+		protected function callback(event:String,array:Object):void
 		{
 		}
 	}

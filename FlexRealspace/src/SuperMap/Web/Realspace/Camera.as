@@ -88,7 +88,7 @@ package SuperMap.Web.Realspace
 				isNew:true,
 				key:this.KEY,
 					functionName:"set_altitude",
-					isReturn:true,
+					isReturn:false,
 					realArgument:realArgument
 			};
 			this.flexToJsCall(array);

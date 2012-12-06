@@ -20,8 +20,8 @@ package SuperMap.Web.UI.Controls
 	
 	[Event(name="succeedCallback", type="SuperMap.Web.Util.CallBackEvent")]
 	[Event(name="failedCallback", type="SuperMap.Web.Util.CallBackEvent")]
-	[Event(name="objectSelected", type="SuperMap.Web.Util.CallBackEvent")]
 	
+	[Event(name="objectSelected", type="SuperMap.Web.Util.CallBackEvent")]
 	[Event(name="measureDistance", type="SuperMap.Web.Util.CallBackEvent")]
 	[Event(name="measureArea", type="SuperMap.Web.Util.CallBackEvent")]
 	[Event(name="measureHeight", type="SuperMap.Web.Util.CallBackEvent")]
@@ -338,92 +338,15 @@ package SuperMap.Web.UI.Controls
 		}
 		
 		/**
-		 * 重写基类的回调函数，后期参数肯定需要添加
-		 * 此方法主要作用在于按照传回来的参数分发给此对象里面应该来处理的方法，
-		 * 并且将需要的参数传给此方法
-		 * 主要用于筛选，具体处理在每个方法内部处理
+		 * 重写基类的回调函数
+		 * 此方法主要作用在于按照传回来的参数分发给此对象里面应该来处理的外部方法，
+		 * 并且将需要的数据传给此方法
+		 * event：事件类型，用于回调后绑定外部处理函数
+		 * array：回调的数据，提供给外部函数使用
 		 */
-		override protected function callback(params:String,array:Object):void
+		override protected function callback(event:String,array:Object):void
 		{
-			
-			switch(params)
-			{
-				case "succeedCallback":
-				{
-					dispatchEvent(new CallBackEvent("succeedCallback",false,false,array));
-					break;
-				}
-				case "failedCallback":
-				{
-					dispatchEvent(new CallBackEvent("failedCallback",false,false,array));
-					break;
-				}
-				case "objectSelected":
-				{
-					dispatchEvent(new CallBackEvent("objectSelected",false,false,array));
-					break;
-				}
-				case "measureDistance":
-				{
-					dispatchEvent(new CallBackEvent("measureDistance",false,false,array));
-					break;
-				}
-				case "measureArea":
-				{
-					dispatchEvent(new CallBackEvent("measureArea",false,false,array));
-					break;
-				}
-				case "measureHeight":
-				{
-					dispatchEvent(new CallBackEvent("measureHeight",false,false,array));
-					break;
-				}
-				case "measureDistanceFinished":
-				{
-					dispatchEvent(new CallBackEvent("measureDistanceFinished",false,false,array));
-					break;
-				}
-				case "measureAreaFinished":
-				{
-					dispatchEvent(new CallBackEvent("measureAreaFinished",false,false,array));
-					break;
-				}
-				case "measureHeightFinished":
-				{
-					dispatchEvent(new CallBackEvent("measureHeightFinished",false,false,array));
-					break;
-				}
-				case "flownEnd":
-				{
-					dispatchEvent(new CallBackEvent("flownEnd",false,false,array));
-					break;
-				}
-				case "addExcavationRegion":
-				{
-					dispatchEvent(new CallBackEvent("addExcavationRegion",false,false,array));
-					break;
-				}
-				case "bubbleInitialize":
-				{
-					dispatchEvent(new CallBackEvent("bubbleInitialize",false,false,array));
-					break;
-				}
-				case "bubbleResize":
-				{
-					dispatchEvent(new CallBackEvent("bubbleResize",false,false,array));
-					break;
-				}
-				case "bubbleClose":
-				{
-					dispatchEvent(new CallBackEvent("bubbleClose",false,false,array));
-					break;
-				}
-					
-				default:
-				{
-					break;
-				}
-			}
+			dispatchEvent(new CallBackEvent(event,false,false,array));
 		}
 		
 	}
