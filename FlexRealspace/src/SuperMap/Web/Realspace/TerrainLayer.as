@@ -1,6 +1,8 @@
 package SuperMap.Web.Realspace
 {
+	import SuperMap.Web.Core.Rectangle2D;
 	import SuperMap.Web.Util.ClassBase;
+
 	public class TerrainLayer extends ClassBase
 	{
 		public var CLASSNAME:String="TerrainLayer";
@@ -30,6 +32,20 @@ package SuperMap.Web.Realspace
 				isNew=strServerRootUrl["isNew"] as Boolean;
 			}
 			super(key,isNew,array);
+		}
+		/**
+		 * 获取地形图层的地理范围。
+		 */
+		public function get_bounds():Rectangle2D
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_bounds",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as Rectangle2D;
 		}
 	}
 }

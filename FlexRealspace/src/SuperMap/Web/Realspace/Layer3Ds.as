@@ -23,6 +23,37 @@ package SuperMap.Web.Realspace
 			var isNew:Boolean=object["isNew"] as Boolean;
 			super(key,isNew,null);
 		}
+		
+		/**
+		 * 向三维图层集合中添加 3DImage、3DModel 和 KML 类型的三维图层。
+		 * strServerRootUrl：图层数据所在的服务器地址。
+		 * strLayerName：要添加的图层名称。
+		 * strDataName：与图层对应的数据名称。
+		 * layer3DType：图层类型。该值必须与从服务器获取的图层类型一致，否则抛异常。
+		 * addToHead：是否将图层添加到集合的顶部，默认值为 true，即添加最上层。
+		 * 返回三维图层。
+		 */
+		public function add(strServerRootUrl:String,strLayerName:String,strDataName:String,layer3DType:Number,addToHead:Boolean):Layer3D
+		{
+			var realArgument:Array=[
+				strServerRootUrl+"$String",
+				strLayerName+"$String",
+				strDataName+"$String",
+				layer3DType+"$Number",
+				addToHead+"$Boolean",
+			];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"add",
+					isReturn:true,
+					realArgument:realArgument
+			};
+			return this.flexToJsCall(array) as Layer3D;
+		}
+		
+		
 		/**
 		 * 获取三维图层集合中指定序号（Number 类型）或者指定图层名称（String 类型）的三维图层对象。如果指定索引的图层不存在则返回 Null。
 		 * object可以为Number类型（代表第几个图层，从0开始），也可以为String 类型（代表图层的名称）
@@ -48,6 +79,20 @@ package SuperMap.Web.Realspace
 					realArgument:realArgument
 			};
 			return this.flexToJsCall(array) as Layer3D;
+		}
+		/**
+		 * 删除图层集合中的所有图层。
+		 */
+		public function removeAll():void
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"removeAll",
+					isReturn:false
+			};
+			this.flexToJsCall(array);
 		}
 	}
 }

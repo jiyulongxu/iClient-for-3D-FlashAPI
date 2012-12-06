@@ -34,21 +34,21 @@ package SuperMap.Web.Util
 		{
 			if(!ApplicationManager.isRegisterApp)
 			{
-//				var str:String = "function parseStringToJs(str){var oHead = document.getElementsByTagName('HEAD').item(0);";
-//				str+="var oScript = document.createElement(\"script\");";
-//				str+="oScript.language = \"javascript\";";
-//				str+="oScript.type = \"text/javascript\";";
-//				str+="oScript.id = \"test\";";
-//				str+="oScript.defer = true;";
-//				str+="oScript.text = str;";
-//				str+="oHead.appendChild(oScript);}";
-//				ExternalInterface.call("eval",str);
-//				var includeStream:IncludeStream=new IncludeStream();
-//				var strey:String=includeStream.toString();
-//				var len:Number=strey.length;
-//				var char:RegExp = /\\/g;
-//				strey = strey.replace(char,"\\\\");
-//				ExternalInterface.call("parseStringToJs",strey);
+				var str:String = "function parseStringToJs(str){var oHead = document.getElementsByTagName('HEAD').item(0);";
+				str+="var oScript = document.createElement(\"script\");";
+				str+="oScript.language = \"javascript\";";
+				str+="oScript.type = \"text/javascript\";";
+				str+="oScript.id = \"test\";";
+				str+="oScript.defer = true;";
+				str+="oScript.text = str;";
+				str+="oHead.appendChild(oScript);}";
+				ExternalInterface.call("eval",str);
+				var includeStream:IncludeStream=new IncludeStream();
+				var strey:String=includeStream.toString();
+				var len:Number=strey.length;
+				var char:RegExp = /\\/g;
+				strey = strey.replace(char,"\\\\");
+				ExternalInterface.call("parseStringToJs",strey);
 				
 				ExternalInterface.addCallback("initBridgeJsToFlex",ApplicationManager.initBridgeJsToFlex);
 				ApplicationManager.isRegisterApp=true;
