@@ -157,6 +157,7 @@ package SuperMap.Web.Util
 					else if(object is Date)
 					{
 						//暂不开放
+						result=object as Date;
 					}
 					break;
 				}

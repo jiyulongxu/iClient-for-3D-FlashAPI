@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:Util="SuperMap.Web.Util.*"
+			   minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import SuperMap.Web.Core.Rectangle2D;
+			import SuperMap.Web.Realspace.FlyingOperator;
+			import SuperMap.Web.Realspace.TerrainLayer;
+			import SuperMap.Web.UI.Controls.SceneControl;
+			import SuperMap.Web.Util.CallBackEvent;
+			
+			import mx.events.FlexEvent;
+			
+			private var sceneControl:SceneControl;
+			private var scene:SuperMap.Web.Realspace.Scene;
+			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			//程序初始化所有控件之后
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//初始化三维场景控件实例
+				sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+			}
+			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
+			private function succeedCallBack(event:CallBackEvent):void
+			{
+				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
+				scene=sceneControl.get_scene();
+				
+				//打开场景
+				scene.open(sceneUrl,"scene");
+				
+				//获取场景中的地形图层
+				var terrainLayer:TerrainLayer = scene.get_terrainLayers().get_item("Beijing@RealspaceSample_Terrain");
+				
+				if (terrainLayer != null) 
+				{
+					//获取图层的地理范围，并飞行到该范围
+					var geobound:Rectangle2D = terrainLayer.get_bounds();
+					scene.get_flyingOperator().flyToBounds(geobound);
+					//
+					scene.set_terrainExaggeration(10);
+					scene.refresh();
+				}	
+			}
+			//控件初始化失败后的回调函数
+			private function failedCallBack(event:CallBackEvent):void
+			{
+				trace("Realspace initialized failed!");
+			}
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				//拉伸地形
+				scene.set_terrainExaggeration(parseFloat(scale.text));
+				//刷新场景
+				scene.refresh();
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Button x="188" y="30" label="拉伸地形" click="button1_clickHandler(event)"/>
+	<Util:SceneDiv id="mySceneControl" x="28" y="70" width="910" height="500">
+	</Util:SceneDiv>
+	<s:TextInput id="scale" x="28" y="28" text="10"/>
+</s:Application>

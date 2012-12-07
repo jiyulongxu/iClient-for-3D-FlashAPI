@@ -114,11 +114,11 @@
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
-	<s:Button x="29" y="37" width="132" label="矢量模型图层" click="button1_clickHandler(event)"/>
-	<s:Button x="29" y="75" width="132" label="影像图层" click="button2_clickHandler(event)"/>
-	<s:Button x="29" y="115" width="132" label="KMZ图层" click="button3_clickHandler(event)"/>
-	<s:Button x="29" y="156" width="132" label="KML图层" click="button4_clickHandler(event)"/>
-	<s:Button x="29" y="200" width="132" label="地形图层" click="button5_clickHandler(event)"/>
+	<s:Button x="29" y="200" width="132" label="矢量模型图层" click="button1_clickHandler(event)"/>
+	<s:Button x="29" y="37" width="132" label="影像图层" click="button2_clickHandler(event)"/>
+	<s:Button x="29" y="78" width="132" label="KMZ图层" click="button3_clickHandler(event)"/>
+	<s:Button x="29" y="117" width="132" label="KML图层" click="button4_clickHandler(event)"/>
+	<s:Button x="29" y="157" width="132" label="地形图层" click="button5_clickHandler(event)"/>
 	<s:Button x="29" y="248" width="132" label="移除图层" click="button6_clickHandler(event)"/>
 	<Util:SceneDiv id="mySceneControl" x="187" y="37" width="733" height="522">
 	</Util:SceneDiv>
