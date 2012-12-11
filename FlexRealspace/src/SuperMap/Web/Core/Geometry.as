@@ -14,11 +14,18 @@ package SuperMap.Web.Core
 			super(key, isNew, array);
 		}
 		/**
-		 * 暂不开放
+		 * 克隆二维几何对象。 
 		 */
 		public function clone():Geometry
 		{
-			return null;
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"clone",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as Geometry;
 		}
 	}
 }

@@ -5,24 +5,42 @@
  * Time: 上午10:54
  * To change this template use File | Settings | File Templates.
  */
+/**
+ * 核心管理类
+ * @constructor   主要使用其静态的方法，不需要其实例
+ */
 SuperMap.Web.Util.ApplicationManager=function(){
 
 }
+/**
+ *  存储flex项目（swf）id的字段，在第一次flex与js通信时需要从flex端传递过来
+ * @type {String}  swf的id
+ */
 SuperMap.Web.Util.ApplicationManager.projectName="";
+/**
+ * 用于存储程序启动之后的所有对象
+ * @type {SuperMap.Web.Util.HashTable}
+ */
 SuperMap.Web.Util.ApplicationManager.classHashTable=new SuperMap.Web.Util.HashTable();
 /**
  * flex调用js的入口
+ * flex端的所有操作从此入口进入（入口有且仅有一个）
+ * @return {*}  经过处理后返回给flex的数据
  */
 SuperMap.Web.Util.ApplicationManager.initBridgeFlexToJs=function(){
 
     //接收flex传过来的东西
     var agr=arguments[0];
     var result;
-    //属性都是通过方法get和set来控制的，归为方法里面，
-    // 并且类初始化和事件不会存在返回值，只有方法存在返回值
+    //总共有三种情况
+    //1、CLASS 初始化类，无返回值
+    //2、FUNCTION 方法的调用、属性的设置、事件的注册，部分存在返回值
+    //3、FIELD  字段的读取
+    //先通过action来判断是哪种
     switch(agr["action"])
     {
         case "CLASS":
+            // 类初始化和事件不会存在返回值，只有方法存在返回值
             this.initClass(agr);
             break;
         case "FUNCTION":
@@ -35,7 +53,7 @@ SuperMap.Web.Util.ApplicationManager.initBridgeFlexToJs=function(){
     return result;
 }
 /**
- * 初始化类
+ * 初始化类的入口
  * @param classOpentions
  */
 SuperMap.Web.Util.ApplicationManager.initClass=function(classOpentions){
@@ -54,10 +72,11 @@ SuperMap.Web.Util.ApplicationManager.initClass=function(classOpentions){
     }
     var str = "new "+classOpentions["className"]+"("+argumentString+")";
     var  object = eval("("+str+")");
+    //保存在哈希表里面
     this.classHashTable.add(classOpentions["key"],object);
 }
 /**
- * 调用类的方法(属性也属于方法)
+ * 调用类的方法(属性也属于方法，事件也是方法的形式)
  * @param functionOpentions
  */
 SuperMap.Web.Util.ApplicationManager.initFunction=function(functionOpentions){
@@ -81,11 +100,16 @@ SuperMap.Web.Util.ApplicationManager.initFunction=function(functionOpentions){
     var result = eval("("+str+")");
     if(functionOpentions.isReturn)
     {
-        result=SuperMap.Web.Util.ApplicationManager.changeToArray(result);
+        result=SuperMap.Web.Util.ApplicationManager.wrapArray(result);
         return result;
     }
 
 }
+/**
+ * 控制字段的入口
+ * @param fieldOpentions
+ * @return {Object}
+ */
 SuperMap.Web.Util.ApplicationManager.initField=function(fieldOpentions){
     var  fieldOperate=fieldOpentions["functionName"].split("_")[0];
     var  fieldName=fieldOpentions["functionName"].split("_")[1];
@@ -95,7 +119,7 @@ SuperMap.Web.Util.ApplicationManager.initField=function(fieldOpentions){
         var result = eval(str1);
         if(fieldOpentions.isReturn)
         {
-            result=SuperMap.Web.Util.ApplicationManager.changeToArray(result);
+            result=SuperMap.Web.Util.ApplicationManager.wrapArray(result);
             return result;
         }
     }
@@ -116,7 +140,7 @@ SuperMap.Web.Util.ApplicationManager.initField=function(fieldOpentions){
 SuperMap.Web.Util.ApplicationManager.callbackFunction = function(key,callbackString){
     return function(result){
 
-        result=SuperMap.Web.Util.ApplicationManager.changeToArray(result);
+        result=SuperMap.Web.Util.ApplicationManager.wrapArray(result);
         var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
         if(callbackString=="succeedCallback")
         {
@@ -132,18 +156,16 @@ SuperMap.Web.Util.ApplicationManager.callbackFunction = function(key,callbackStr
  * @return {*}
  */
 SuperMap.Web.Util.ApplicationManager.parseArguments = function(key,argArray){
-    //主要用于参数里面有数组的时候，但是只能有一重数组，因为eval的解析会把两重以上的数组解析成一重数组，全是以逗号分隔的字符串
-    if(argArray.split(",").length>1)
+    //判断一下是否是数组
+    if(argArray.split("[").length>1)
     {
-        var argStr=argArray.split(",");
-        var resultArray=[];
-        for(var i=0;i<argStr.length;i++)
-        {
-            resultArray[i]=arguments.callee(key,argStr[i]);
-        }
-        return resultArray;
+        argArray=eval(argArray);
     }
-    else{
+    return SuperMap.Web.Util.ApplicationManager.convertToObject(key,argArray);
+}
+SuperMap.Web.Util.ApplicationManager.convertToObject=function(key,argArray){
+     if((typeof argArray)=="string")
+     {
         var a = argArray.split("$");
         var value = a[0];
         var type = a[1];
@@ -164,7 +186,7 @@ SuperMap.Web.Util.ApplicationManager.parseArguments = function(key,argArray){
                     valueResult=Number(value);
                     break;
                 case "Boolean":
-                    valueResult=Boolean(value);
+                    valueResult=(value=="true")?true:false;
                     break;
                 case "Object":
                     valueResult=SuperMap.Web.Util.ApplicationManager.classHashTable.getItem(parseInt(value));
@@ -172,17 +194,37 @@ SuperMap.Web.Util.ApplicationManager.parseArguments = function(key,argArray){
                 case "Enum":
                     valueResult=eval(value);
                     break;
+                case "Date":
+                    valueResult=new Date(Number(value));
+                    break;
             }
         }
         return valueResult;
-    }
-
+     }
+    else
+     {
+         var resultArray=[];
+         for(var i=0;i<argArray.length;i++)
+         {
+             resultArray[i]=SuperMap.Web.Util.ApplicationManager.convertToObject(key,argArray[i]);
+         }
+         return resultArray;
+     }
 }
+/**
+ * 创建一个唯一的key
+ * @return {*}
+ */
 SuperMap.Web.Util.ApplicationManager.createSoleKey=function(){
     var nowData=new Date();
     var soleKey=SuperMap.Web.Util.ApplicationManager.verifySoleKey(nowData.getTime()*2);
     return soleKey;
 }
+/**
+ * 计算key
+ * @param timeNumber
+ * @return {*}
+ */
 SuperMap.Web.Util.ApplicationManager.verifySoleKey=function(timeNumber){
     if(SuperMap.Web.Util.ApplicationManager.classHashTable.contains(timeNumber))
     {
@@ -191,7 +233,12 @@ SuperMap.Web.Util.ApplicationManager.verifySoleKey=function(timeNumber){
     }
     return timeNumber;
 }
-SuperMap.Web.Util.ApplicationManager.changeToArray=function(oldArray){
+/**
+ * 将返回值转化为标准数组格式传回给flex端
+ * @param oldArray
+ * @return {*}
+ */
+SuperMap.Web.Util.ApplicationManager.wrapArray=function(oldArray){
     var newArray;
     switch(typeof oldArray)
     {
@@ -222,13 +269,14 @@ SuperMap.Web.Util.ApplicationManager.changeToArray=function(oldArray){
                         newArray=[];
                         for(var i=0;i<oldArray.length;i++)
                         {
-                            newArray[i]=SuperMap.Web.Util.ApplicationManager.changeToArray(oldArray[i]);
+                            newArray[i]=SuperMap.Web.Util.ApplicationManager.wrapArray(oldArray[i]);
                         }
                         break;
                     }
                     case Date:
                     {
-                        //as里面的Date还没测试是否一样，估计不一样，可能此参数用不上
+                        //as里面的Date和js里面的一样，可以互相通信
+                        newArray=oldArray;
                         break;
                     }
                     default :

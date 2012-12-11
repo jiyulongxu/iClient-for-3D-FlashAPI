@@ -1,5 +1,6 @@
 package SuperMap.Web.Realspace
 {
+	import SuperMap.Web.Core.Geometry3D;
 	import SuperMap.Web.Core.Rectangle2D;
 	import SuperMap.Web.Util.ClassBase;
 
@@ -73,10 +74,28 @@ package SuperMap.Web.Realspace
 			this.flexToJsCall(array);
 		}
 		/**
-		 * 暂不开放
+		 * 在指定的时间内，以指定的方式从当前场景飞行至指定的几何对象。
+		 * geoObject ：三维几何对象。
+		 * nMillSec ：飞行时间，单位为毫秒。可选参数，默认值为-1，将以一个默认速度匀速飞行到指定地点。
+		 * flyingMode ：飞行方式。默认值为SuperMap.Web.Realspace.FlyingMode.MULTIPOINTFLY_NORMAL。 
 		 */
-		public function flyToGeometry():void
-		{}
+		public function flyToGeometry(geoObject:Geometry3D,nMillSec:Number,flyingMode:Number):void
+		{
+			var realArgument:Array=[
+				geoObject.KEY.toString()+"$Object",
+				nMillSec.toString()+"$Number",
+				flyingMode.toString()+"$Number"
+			];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"flyToGeometry",
+					isReturn:false,
+					realArgument:realArgument
+			};
+			this.flexToJsCall(array);
+		}
 		/**
 		 * 暂不开放
 		 */

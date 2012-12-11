@@ -11,8 +11,7 @@ package SuperMap.Web.Util
 	public class ApplicationManager
 	{
 		public function ApplicationManager()
-		{
-		//dfgfdfgfd
+		{    
 		}
 		public static var classHashTable:HashTable=new HashTable(10);
 		/**

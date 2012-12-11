@@ -2,6 +2,8 @@ package SuperMap.Web.Util
 {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.utils.getTimer;
+
 	/**
 	 * 基类
 	 */
@@ -72,8 +74,85 @@ package SuperMap.Web.Util
 		{
 			return ApplicationManager.flexToJs(array);
 		}
-		
-		
+		/**
+		 * 将正常的数组进行包装，转换为可传递给js端的数组
+		 * 以为按照数组形式不变，二维开始都转换为字符串形式
+		 */
+		public function wrapArray(array:Array):Array
+		{
+			var result:Array;
+			for(var i:Number=0;i<array.length;i++)
+			{
+				result[i]=this.objectToString(array[i]);
+			}
+			return result;
+		}
+		/**
+		 * 将对象转换为有标示符的字符串
+		 * 支持数组转换
+		 */
+		public function objectToString(object:Object):String
+		{
+			var result:Object;
+			var type:String=typeof(object);
+			switch(type)
+			{
+				case "undefined":
+				{
+					break;
+				}
+				case "string":
+				{
+					result="'"+(object as String)+"$String'";
+					break;
+				}
+				case "number":
+				{
+					result="'"+(object as Number).toString()+"$Number'";
+					break;
+				}
+				case "boolean":
+				{
+					result="'"+(object as Boolean).toString()+"$Boolean'";
+					break;
+				}
+				case "object":
+				{
+					if(object is Array)
+					{
+						var myArray:Array=(object as Array);
+						for(var i:Number=0;i<myArray.length;i++)
+						{
+							if(i==0)
+							{
+								myArray[i]="["+this.objectToString(myArray[i]);
+							}
+							else if(i==myArray.length-1)
+							{
+								myArray[i]=this.objectToString(myArray[i])+"]";
+							}
+							else
+							{
+								myArray[i]=this.objectToString(myArray[i]);
+							}
+						}
+						result=myArray;
+					}
+					else if(object is Date)
+					{
+						//暂不开放
+						var resultTime:Date=object as Date;
+						var str:String="'"+resultTime.time.toString()+"$Date'";
+						result= str;
+					}
+					else
+					{
+					}
+					break;
+				}
+			}
+			return result.toString();
+		}
 		
 		/**
 		 * 回调函数处理的方法，需要每个子类重写

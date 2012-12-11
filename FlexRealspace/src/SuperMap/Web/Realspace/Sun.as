@@ -52,7 +52,7 @@ package SuperMap.Web.Realspace
 		/**
 		 * 获取计算太阳位置时所用的时间。
 		 */
-		public function get_dateTime():Object
+		public function get_dateTime():Date
 		{
 			var array:Object={
 				action:"FUNCTION",
@@ -61,7 +61,26 @@ package SuperMap.Web.Realspace
 					functionName:"get_dateTime",
 					isReturn:true
 			};
-			return this.flexToJsCall(array) as Object;
+			return this.flexToJsCall(array) as Date;
+		}
+		
+		/**
+		 * 设置计算太阳位置时所用的时间。 
+		 */
+		public function set_dateTime(value:Date):void
+		{
+			var realArgument:Array=[
+				value.time.toString()+"$Date"
+			];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"set_dateTime",
+					isReturn:false,
+					realArgument:realArgument
+			};
+			this.flexToJsCall(array);
 		}
 		
 		/**

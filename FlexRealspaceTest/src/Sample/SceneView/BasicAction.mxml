@@ -34,7 +34,7 @@
 				scene=sceneControl.get_scene();
 				//打开场景
 				scene.open(sceneUrl,"scene");
-				///新建一个照相机对象
+				//新建一个照相机对象
 				var camera:SuperMap.Web.Realspace.Camera=new SuperMap.Web.Realspace.Camera(116.348,40,1000.0);
 				//将场景的视点移动到场景区域
 				scene.get_flyingOperator().flyTo(camera,5000);

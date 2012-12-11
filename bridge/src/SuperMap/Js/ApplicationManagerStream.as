@@ -5,7 +5,7 @@ package SuperMap.Js
 	public class ApplicationManagerStream extends ByteArray
 	{
 		public function ApplicationManagerStream()
-		{    
+		{        
 			super();  
 		}
 	}
