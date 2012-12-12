@@ -138,8 +138,12 @@ SuperMap.Web.Util.ApplicationManager.initField=function(fieldOpentions){
  * @return {Function}
  */
 SuperMap.Web.Util.ApplicationManager.callbackFunction = function(key,callbackString){
-    return function(result){
-
+    return function(){
+        var result=[];
+        for(var i=0;i<arguments.length;i++)
+        {
+            result[i]=arguments[i];
+        }
         result=SuperMap.Web.Util.ApplicationManager.wrapArray(result);
         var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
         if(callbackString=="succeedCallback")

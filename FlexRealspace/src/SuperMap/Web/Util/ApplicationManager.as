@@ -2,16 +2,18 @@ package SuperMap.Web.Util
 {
 	
 	import SuperMap.IncludeStream;
+	import SuperMap.Web.Realspace.EventObject;
 	
 	import flash.external.ExternalInterface;
 	import flash.utils.getDefinitionByName;
+
 	/**
 	 * 核心管理类
 	 */
 	public class ApplicationManager
 	{
 		public function ApplicationManager()
-		{    
+		{
 		}
 		public static var classHashTable:HashTable=new HashTable(10);
 		/**
@@ -128,6 +130,11 @@ package SuperMap.Web.Util
 					}
 					else
 					{
+						//很奇怪的类，下面两行代码没啥太大的用处，但是没有的话飞行结束事件EventObject类不能使用反射，作用于找不到
+						//搞不清楚为什么
+						var sdsd:EventObject=new EventObject({key:parseInt("515426295"),isNew:false});
+						var resultClass1:Class=getDefinitionByName("SuperMap.Web.Realspace.EventObject") as Class;
+						
 						var resultClass:Class=getDefinitionByName(resultType) as Class;
 						result= new resultClass({key:parseInt(resultValue),isNew:false});
 					}

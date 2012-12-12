@@ -6,7 +6,8 @@ package SuperMap.Js
 	{
 		public function ApplicationManagerStream()
 		{        
-			super();  
+			super();     
+			
 		}
 	}
 }
