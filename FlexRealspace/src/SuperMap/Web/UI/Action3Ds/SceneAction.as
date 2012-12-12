@@ -5,12 +5,24 @@ package SuperMap.Web.UI.Action3Ds
 	import SuperMap.Web.Util.ClassBase;
 	
 	[Event(name="actionCompleted", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onClick", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onDbClick", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onKeyDown", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onKeyUp", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onMouseDown", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onMouseMove", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onMouseOut", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onMouseOver", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onMouseUp", type="SuperMap.Web.Util.CallBackEvent")]
+	[Event(name="onMouseWheel", type="SuperMap.Web.Util.CallBackEvent")]
 	
 	public class SceneAction extends ClassBase
 	{
 		public function SceneAction(sceneControl:Object=null,key:Number=0,isNew:Boolean=true,array:Object=null)
 		{
 			super(key,isNew,array);
+			//激活所有事件
+			this.activateAllEvent();
 		}
 		/**
 		 * 获取交互操作的名称。当用户自行开发一个 SceneAction 子类时，可自定义该操作的名称。
@@ -132,6 +144,40 @@ package SuperMap.Web.UI.Action3Ds
 		public function remove_actionCompleted(handler:Function):void
 		{
 			removeEventListener("actionCompleted",handler);
+		}
+		//发送消息给js端激活此对象的所有事件
+		private function activateAllEvent():void
+		{
+			//需要将对象的key传递过去添加成为对象的字段
+			var realArgument:Array=[
+				this.KEY.toString()+"$Number"
+			];
+			//动态添加字段的方法为addKey
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"addKey",
+					isReturn:false,
+					realArgument:realArgument
+			};
+			this.flexToJsCall(array);
+		}
+		/**
+		 * 注册回调事件
+		 * eventName：事件名称
+		 * handler：回调函数
+		 */
+		public function addEvent(eventName:String,handler:Function):void
+		{
+			addEventListener(eventName,handler);
+		}
+		/**
+		 * 移除与事件绑定的指定回调函数 handler。
+		 */
+		public function removeEvent(eventName:String,handler:Function):void
+		{
+			removeEventListener(eventName,handler);	
 		}
 		/**
 		 * 重写基类的回调函数

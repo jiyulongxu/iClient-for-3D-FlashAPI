@@ -1,7 +1,10 @@
 package SuperMap.Web.UI.Action3Ds
 {
 	import SuperMap.Web.UI.Controls.SceneControl;
+	import SuperMap.Web.Util.CallBackEvent;
 
+	
+	
 	public class Pan extends SceneAction
 	{
 		public var CLASSNAME:String="Pan";
@@ -30,5 +33,6 @@ package SuperMap.Web.UI.Action3Ds
 			}
 			super(sceneControl,key,isNew,array);
 		}
+		
 	}
 }

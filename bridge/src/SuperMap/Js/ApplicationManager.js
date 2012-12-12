@@ -303,3 +303,99 @@ SuperMap.Web.Util.ApplicationManager.wrapArray=function(oldArray){
     }
     return newArray;
 }
+/**
+ * 给界面交互操作的父类添加一个KEY，他和他的子类比较特殊，用于对应对象
+ * 此方法在as端每一个子类初始化的最后悔调用，将key传递过来记录，方便回调函数使用
+ * @param key
+ */
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.addKey=function(key){
+    this.KEY=key;
+}
+/**
+ * 重写了方法 onClick，此方法会在鼠标单击时触发，在这里不活后传递给as来处理
+ * 变相的在as端形成了事件的注册
+ * 一下都是一样
+ * @param e
+ */
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onClick=function(e){
+    //回调的e对象为EventObject类型
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    //此处判定就怕本身内部的那个操作并不是在as端初始化的，就不存在key
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onClick",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onDbClick=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onDbClick",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onKeyDown=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onKeyDown",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onKeyUp=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onKeyUp",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onMouseDown=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onMouseDown",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onMouseMove=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onMouseMove",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onMouseOut=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onMouseOut",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onMouseOver=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onMouseOver",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onMouseUp=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onMouseUp",result);
+    }
+}
+SuperMap.Web.UI.Action3Ds.SceneAction.prototype.onMouseWheel=function(e){
+    var result=SuperMap.Web.Util.ApplicationManager.wrapArray(e);
+    var dou=document.getElementById(SuperMap.Web.Util.ApplicationManager.projectName);
+    if(this.KEY!=undefined)
+    {
+        dou.initBridgeJsToFlex(this.KEY,"onMouseWheel",result);
+    }
+}
