@@ -6,6 +6,7 @@ package SuperMap.Web.Realspace
 	{
 		public var CLASSNAME:String="EventObject";
 		
+		
 		/**
 		 * 在js端对应的类的全名
 		 */

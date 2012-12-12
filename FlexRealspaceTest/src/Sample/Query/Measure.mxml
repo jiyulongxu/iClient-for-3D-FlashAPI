@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:Util="SuperMap.Web.Util.*"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import SuperMap.Web.Core.Rectangle2D;
+			import SuperMap.Web.Realspace.Layer3D;
+			import SuperMap.Web.UI.Action3Ds.MeasureArea;
+			import SuperMap.Web.UI.Action3Ds.MeasureDistance;
+			import SuperMap.Web.UI.Action3Ds.MeasureHeight;
+			import SuperMap.Web.UI.Action3Ds.Pan;
+			import SuperMap.Web.UI.Controls.SceneControl;
+			import SuperMap.Web.Util.CallBackEvent;
+			
+			import mx.events.FlexEvent;
+			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			private var sceneControl:SceneControl;
+			private var scene:SuperMap.Web.Realspace.Scene;
+			
+			//程序初始化所有控件之后
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//初始化三维场景控件实例
+				sceneControl=new SceneControl(mySceneDiv,succeedCallBack,failedCallBack);
+			}
+			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
+			private function succeedCallBack(event:CallBackEvent):void
+			{
+				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
+				scene=sceneControl.get_scene();
+				//打开场景
+				scene.open(sceneUrl,"scene");
+				//获取场景中的第一个图层
+				var layer3D:Layer3D = scene.get_layer3Ds().get_item("Ground@OlympicGreen");
+				if (layer3D != null) {
+					//获取图层的地理范围，并飞行到该范围
+					var geobound:Rectangle2D = layer3D.get_bounds();
+					scene.get_flyingOperator().flyToBounds(geobound);
+				}
+			}
+			//控件初始化失败后的回调函数
+			private function failedCallBack(event:CallBackEvent):void
+			{
+				trace("Realspace initialized failed!");
+			}
+			//漫游
+			protected function pan(event:MouseEvent):void
+			{
+				//设置控件的当前操作为漫游
+				var panAction:Pan = new SuperMap.Web.UI.Action3Ds.Pan(sceneControl);
+				sceneControl.set_sceneAction(panAction); 
+			}
+			//距离量算
+			protected function measureDis(event:MouseEvent):void
+			{
+				//设置控件的当前操作为距离量算
+				var measureDisAction:MeasureDistance = new MeasureDistance(sceneControl);
+				sceneControl.set_sceneAction(measureDisAction); 
+				
+				//给距离量算事件和量算结束事件注册回调函数
+				sceneControl.addEvent("measureDistance", disHandler);
+				sceneControl.addEvent("measureDistanceFinished", disFinishedHandler);
+			}
+			
+			//距离量算过程中的回调事件
+			private function disHandler(event:CallBackEvent):void
+			{
+				//在鼠标点击地图之后移动就会一直触发此事件，如果鼠标处于移动状态，
+				//返回的event.data[0]为一个长度为2的数组，第一个数字是当前线段的距离，第二个数字是总的距离
+				//返回的event.data[1]为空
+				//当鼠标大于等于第二次单击地图时，event.data[0]一样，而event.data[1]会返回一个刚绘制出来的SuperMap.Web.Core.GeoLine3D的对象
+				var result:Array=event.data[0] as Array;
+				//量算过程中及时的显示量算信息
+				labelResult.text="距离：" + result[0].toString() + "米" + " 总距离："  + result[1].toString() +  "米";
+			}
+			//距离量算结束后的回调事件
+			private function disFinishedHandler(event:CallBackEvent):void
+			{
+				//量算结束的时候返回的event.data[0]为一个数字，总距离
+				//event.data[1]会返回最后完整的SuperMap.Web.Core.GeoLine3D的对象
+				var result:Number=event.data[0] as Number;
+				//量算结束后显示总的距离信息
+				labelResult.text=" 总距离："  + result.toString() +  "米";
+			}
+			
+			//面积量算
+			protected function measureArea(event:MouseEvent):void
+			{
+				//设置控件的当前操作为面积量算
+				var measureAreaAction:MeasureArea = new MeasureArea (sceneControl);
+				sceneControl.set_sceneAction(measureAreaAction); 
+				
+				//给面积量算事件和量算结束事件注册回调函数
+				sceneControl.addEvent("measureArea", areaHandler);
+				sceneControl.addEvent("measureAreaFinished", areaFinishedHandler);
+			}
+			//面积量算过程中的回调事件
+			private function areaHandler(event:CallBackEvent):void
+			{
+				//从鼠标点击地图开始移动，event.data[0]始终未当前的面积
+				//而event.data[1]在第三次点击鼠标之前都是null，从点击第三个点开始就组成了一个面
+				//event.data[1]就是一个SuperMap.Web.Core.GeoRegion3D的对象
+				var result:Number=event.data[0] as Number;
+				//量算过程中及时的显示量算信息
+				labelResult.text=" 面积："  + result.toString() +  "平方米";
+			}
+			//面积量算结束后的回调事件
+			private function areaFinishedHandler(event:CallBackEvent):void
+			{
+				//量算完毕后返回的event.data[0]为当前的总面积
+				//event.data[1]是当前绘制出来的SuperMap.Web.Core.GeoRegion3D的对象
+				var result:Number=event.data[0] as Number;
+				//量算结束后显示总的面积信息
+				labelResult.text=" 面积："  + result.toString() +  "平方米";
+			}
+			
+			//高程量算
+			protected function measureHeight(event:MouseEvent):void
+			{
+				//设置控件的当前操作为高程量算
+				var measureHeightAction:MeasureHeight= new MeasureHeight(sceneControl);
+				sceneControl.set_sceneAction(measureHeightAction); 
+				
+				//给高程量算事件和量算结束事件注册回调函数
+				sceneControl.addEvent("measureHeight", heightHandler);
+				sceneControl.addEvent("measureHeightFinished", heightFinishedHandler);
+			}
+			//高程量算过程中的回调事件
+			private function heightHandler(event:CallBackEvent):void
+			{
+				//高程的量算从第二次点击就作为结束，中间的返回值event.data[0]为当前的高程
+				var result:Number=event.data[0] as Number;
+				//量算过程中及时的显示量算信息
+				labelResult.text=" 高程："  + result.toString() +  "米";
+			}
+			//高程量算结束后的回调事件
+			private function heightFinishedHandler(event:CallBackEvent):void
+			{
+				//量算结束后event.data[0]为当前的高程
+				//event.data[1]会返回SuperMap.Web.Core.GeoLine3D的对象
+				var result:Number=event.data[0] as Number;
+				//量算结束后显示总的高程信息
+				labelResult.text=" 高程："  + result.toString() +  "米";
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<Util:SceneDiv id="mySceneDiv" x="10" y="50" width="935" height="540">
+	</Util:SceneDiv>
+	<s:Button x="10" y="10" label="距离量算" click="measureDis(event)"/>
+	<s:Button x="88" y="10" label="面积量算" click="measureArea(event)"/>
+	<s:Button x="166" y="10" label="高程量算" click="measureHeight(event)"/>
+	<s:Button x="244" y="10" label="漫游" click="pan(event)"/>
+	<s:Label id="labelResult" x="322" y="19" text="量算结果："/>
+</s:Application>

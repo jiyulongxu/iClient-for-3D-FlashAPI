@@ -2,6 +2,8 @@ package SuperMap.Web.Util
 {
 	
 	import SuperMap.IncludeStream;
+	import SuperMap.Web.Core.GeoLine3D;
+	import SuperMap.Web.Core.GeoRegion3D;
 	import SuperMap.Web.Realspace.EventObject;
 	
 	import flash.external.ExternalInterface;
@@ -132,9 +134,18 @@ package SuperMap.Web.Util
 					{
 						//很奇怪的类，下面两行代码没啥太大的用处，但是没有的话飞行结束事件EventObject类不能使用反射，作用于找不到
 						//搞不清楚为什么
-						var sdsd:EventObject=new EventObject({key:parseInt("515426295"),isNew:false});
-						var resultClass1:Class=getDefinitionByName("SuperMap.Web.Realspace.EventObject") as Class;
-						
+						if(resultType=="SuperMap.Web.Realspace.EventObject")
+						{
+							var sdsd1:EventObject=new EventObject({key:0,isNew:false});
+						}
+						if(resultType=="SuperMap.Web.Core.GeoLine3D")
+						{
+							var sdsd2:GeoLine3D=new GeoLine3D({key:0,isNew:false});
+						}
+						if(resultType=="SuperMap.Web.Core.GeoRegion3D")
+						{
+							var sdsd3:GeoRegion3D=new GeoRegion3D({key:0,isNew:false});
+						}
 						var resultClass:Class=getDefinitionByName(resultType) as Class;
 						result= new resultClass({key:parseInt(resultValue),isNew:false});
 					}
