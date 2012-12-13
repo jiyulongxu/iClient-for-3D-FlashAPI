@@ -24,7 +24,6 @@ package SuperMap.Web.Util
 		public static function flexToJs(object:Object):Object
 		{
 			var result:Object=ExternalInterface.call("SuperMap.Web.Util.ApplicationManager.initBridgeFlexToJs",object);
-			
 			return ApplicationManager.parseArguments(result);
 		}
 		/**

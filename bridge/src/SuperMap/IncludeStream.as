@@ -20,12 +20,12 @@ package SuperMap
 		{
 			var microsoftAjaxStream:MicrosoftAjaxStream=new MicrosoftAjaxStream();
 			var jsStream:JsStream=new JsStream();
-			var realspaceStream:RealspaceStream=new RealspaceStream();
 			var iServerJava6RStream:IServerJava6RStream=new IServerJava6RStream();
+			var realspaceStream:RealspaceStream=new RealspaceStream();
 			var hashTableStream:HashTableStream=new HashTableStream();
 			var applicationManagerStream:ApplicationManagerStream=new ApplicationManagerStream();
 			var sceneDivStream:SceneDivStream=new SceneDivStream();
-			return microsoftAjaxStream.toString()+jsStream.toString()+realspaceStream.toString()+iServerJava6RStream.toString()+hashTableStream.toString()+applicationManagerStream.toString()+sceneDivStream.toString();
+			return microsoftAjaxStream.toString()+jsStream.toString()+iServerJava6RStream.toString()+realspaceStream.toString()+hashTableStream.toString()+applicationManagerStream.toString()+sceneDivStream.toString();
 		}
 	}
 }
