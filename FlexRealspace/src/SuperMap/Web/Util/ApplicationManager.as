@@ -5,6 +5,7 @@ package SuperMap.Web.Util
 	import SuperMap.Web.Core.GeoLine3D;
 	import SuperMap.Web.Core.GeoRegion3D;
 	import SuperMap.Web.Realspace.EventObject;
+	import SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsEventArgs;
 	
 	import flash.external.ExternalInterface;
 	import flash.utils.getDefinitionByName;
@@ -24,6 +25,7 @@ package SuperMap.Web.Util
 		public static function flexToJs(object:Object):Object
 		{
 			var result:Object=ExternalInterface.call("SuperMap.Web.Util.ApplicationManager.initBridgeFlexToJs",object);
+			
 			return ApplicationManager.parseArguments(result);
 		}
 		/**
@@ -144,6 +146,10 @@ package SuperMap.Web.Util
 						if(resultType=="SuperMap.Web.Core.GeoRegion3D")
 						{
 							var sdsd3:GeoRegion3D=new GeoRegion3D({key:0,isNew:false});
+						}
+						if(resultType=="SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsEventArgs")
+						{
+							var sdsd4:GetFeature3DsEventArgs=new GetFeature3DsEventArgs({key:0,isNew:false});
 						}
 						var resultClass:Class=getDefinitionByName(resultType) as Class;
 						result= new resultClass({key:parseInt(resultValue),isNew:false});

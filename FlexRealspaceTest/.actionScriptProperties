@@ -14,9 +14,10 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
+    <application path="Sample/Query/QueryService.mxml"/>
     <application path="Sample/SceneView/HelloWorld.mxml"/>
-    <application path="Sample/SceneView/BasicAction.mxml"/>
     <application path="Sample/SceneView/TerrainExaggeration.mxml"/>
+    <application path="Sample/SceneView/BasicAction.mxml"/>
     <application path="Sample/Query/Measure.mxml"/>
     <application path="Sample/SceneView/Fly_Routes.mxml"/>
     <application path="Sample/SceneView/LoadLayers.mxml"/>
@@ -27,4 +28,3 @@
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
 </actionScriptProperties>
-

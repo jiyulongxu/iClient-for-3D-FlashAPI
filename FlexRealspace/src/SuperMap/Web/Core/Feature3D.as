@@ -32,5 +32,49 @@ package SuperMap.Web.Core
 		public function set_name(value:String):void
 		{
 		}
+		/**
+		 * 获取标识三维要素对象在三维要素对象集合 Feature3Ds中的位置（索引）。 
+		 */
+		public function get_id():Number
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_id",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as Number;
+		}
+		/**
+		 * 获取三维地理要素的风格。 
+		 */
+		public function get_style3D():Style3D
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_style3D",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as Style3D;
+		}
+		/**
+		 * 设置三维地理要素的风格。
+		 */
+		public function set_style3D(value:Style3D):void
+		{
+			var realArgument:Array=[value.KEY.toString()+"$Object"];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"set_style3D",
+					isReturn:true,
+					realArgument:realArgument
+			};
+			this.flexToJsCall(array);
+		}
 	}
 }

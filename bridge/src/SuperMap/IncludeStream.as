@@ -12,7 +12,9 @@ package SuperMap
 	 */
 	public class IncludeStream 
 	{
-		
+		/**
+		 * 构造函数
+		 */
 		public function IncludeStream() 
 		{   
 		}

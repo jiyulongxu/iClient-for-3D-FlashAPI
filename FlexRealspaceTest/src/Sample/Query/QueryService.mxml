@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:Util="SuperMap.Web.Util.*"
+			   minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import SuperMap.Web.Core.Color;
+			import SuperMap.Web.Core.Feature3D;
+			import SuperMap.Web.Core.Style3D;
+			import SuperMap.Web.Realspace.FlyingOperator;
+			import SuperMap.Web.Realspace.Layer3D;
+			import SuperMap.Web.UI.Action3Ds.Pan;
+			import SuperMap.Web.UI.Controls.SceneControl;
+			import SuperMap.Web.Util.CallBackEvent;
+			import SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsBySQLParameters;
+			import SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsBySQLService;
+			import SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsEventArgs;
+			import SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsResult;
+			import SuperMap.Web.iServerJava6R.FilterParameter;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			private var sceneControl:SceneControl;
+			private var scene:SuperMap.Web.Realspace.Scene;
+			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			private var queryServiceUrl:String="http://localhost:8090/iserver/services/data-realspace/rest/data/featureResults";
+			private var queryDatasetName:String;
+			[Bindable] 
+			public var cards:ArrayCollection = new ArrayCollection( 
+				[ {label:"PipeLine3D",data:"PipeLine3D"},  
+					{label:"PipePoint3D",data:"PipePoint3D"}]); 
+			
+			//程序初始化所有控件之后
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//初始化三维场景控件实例
+				sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+			}
+			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
+			private function succeedCallBack(event:CallBackEvent):void
+			{
+				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
+				scene=sceneControl.get_scene();
+				//打开场景
+				scene.open(sceneUrl,"scene_query3D");
+			}
+			//控件初始化失败后的回调函数
+			private function failedCallBack(event:CallBackEvent):void
+			{
+				trace("Realspace initialized failed!");
+			}
+			//执行 SQL 查询
+			protected function doSqlQuery(event:MouseEvent):void
+			{
+				//移除之前生成的跟踪图层
+				scene.get_trackingLayer3D().removeAll();
+				//获取查询的数据集的名称
+				queryDatasetName=comboBoxDatasetName.selectedItem.data as String;
+				//获取查询的过滤条件
+				var attributeFilter:String= textInputAttributeFilter.text;
+				//创建一个过滤对象
+				var filterParameter:FilterParameter = new FilterParameter();
+				//设置过滤的条件
+				filterParameter.set_attributeFilter(attributeFilter);
+				//创建一个SQL查询参数对象类的对象
+				var getFeaturesBySQLParameters:GetFeature3DsBySQLParameters = new GetFeature3DsBySQLParameters();
+				//设置查询的数据集名称数组
+				getFeaturesBySQLParameters.set_datasetNames(["3DDataset:" +queryDatasetName]);
+				//设置查询的 SQL 条件。
+				getFeaturesBySQLParameters.set_filterParameter(filterParameter);
+				//创建一个服务对象
+				var getFeaturesBySQLService:GetFeature3DsBySQLService = new GetFeature3DsBySQLService(queryServiceUrl);
+				//注册查询成功的回调函数
+				getFeaturesBySQLService.add_processCompleted(onQueryComplete);
+				//发送查询请求服务
+				getFeaturesBySQLService.processAsync(getFeaturesBySQLParameters);
+			}
+			//查询成功的回调函数
+			private function onQueryComplete(event:CallBackEvent):void
+			{
+				//获取查询成功后回调的要素查询参数对象
+				var resultSet:GetFeature3DsResult = (event.data[0] as GetFeature3DsEventArgs).get_result();
+				//获取查询结果内的 Features3D 数量。
+				var n:Number = resultSet.get_featureCount();
+				if(resultSet!=null && n>0)
+				{
+					//获取查询结果内的 Features3D 集合。
+					var feature3Ds:Array = resultSet.get_feature3Ds();
+					for(var i:Number=0;i<n;i++)
+					{
+						var feature3D:Feature3D = feature3Ds[i];
+						//初始化一个三维要素风格类对象
+						var resulstStyle3D:Style3D = new Style3D();
+						//获取标识三维要素对象在三维要素对象集合 Feature3Ds中的位置（索引）。
+						var id:Number = feature3D.get_id();
+						//获取三维图层集合中指定序号（Number 类型）的三维图层对象。
+						var layer3d:Layer3D = scene.get_layer3Ds().get_item(comboBoxDatasetName.selectedIndex);
+						//在图层中找到这个三维要素对象
+						var feature3DInLayer:Feature3D = layer3d.findFeature3DByID(id);
+						//获取拉伸高度值，单位为米。
+						var extendHeight:Number = feature3DInLayer.get_style3D().get_extendHeight();
+						//获取高度模式 AltitudeMode。
+						var altitudeMode:Number = feature3DInLayer.get_style3D().get_altitudeMode();
+						//设置拉伸高度值，单位为米。
+						resulstStyle3D.set_extendHeight(extendHeight);
+						//设置高度模式 AltitudeMode。
+						resulstStyle3D.set_altitudeMode(altitudeMode);
+						//设置三维几何线对象的颜色。
+						resulstStyle3D.set_lineColor(new SuperMap.Web.Core.Color(255, 0, 0, 255));
+						//设置三维几何面对象的填充前景颜色。
+						resulstStyle3D.set_fillForeColor(new SuperMap.Web.Core.Color(255, 255, 255, 255));
+						//设置三维几何点对象的颜色。
+						resulstStyle3D.set_markerColor(new SuperMap.Web.Core.Color(255, 0, 0, 255));
+						//设置三维几何线对象的宽度，像素单位。
+						resulstStyle3D.set_lineWidth(5);
+						//设置三维地理要素的风格。
+						feature3D.set_style3D(resulstStyle3D);
+						//向跟踪图层添加一个要素对象，并设置标签信息。
+						scene.get_trackingLayer3D().add(feature3D, "feature3D");
+					}
+				}
+				else
+				{
+					trace("范围内没有找到符合条件的三维几何体。");
+				}
+				//设置场景当前状态为漫游
+				sceneControl.set_sceneAction(new SuperMap.Web.UI.Action3Ds.Pan(sceneControl));
+			}
+			//清空查询遗留的痕迹
+			private function clearResult(event:MouseEvent):void
+			{
+				//移除之前生成的跟踪图层
+				scene.get_trackingLayer3D().removeAll();
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<Util:SceneDiv id="mySceneControl" x="10" y="88" width="935" height="502">
+	</Util:SceneDiv>
+	<s:Label x="10" y="15" text="查询的数据集名称："/>
+	<s:ComboBox id="comboBoxDatasetName" dataProvider="{cards}" selectedIndex="0" x="126" y="10"/>
+	<s:Label x="276" y="16" text="设置查询过滤条件（例如，SMID&gt;15）："/>
+	<s:TextInput id="textInputAttributeFilter" x="504" y="10"/>
+	<s:Button x="640" y="10" label="SQL查询" click="doSqlQuery(event)"/>
+	<s:Button x="718" y="9" label="清除结果" click="clearResult(event)"/>
+</s:Application>

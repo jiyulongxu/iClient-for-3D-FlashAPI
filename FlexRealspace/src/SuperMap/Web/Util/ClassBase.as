@@ -103,17 +103,17 @@ package SuperMap.Web.Util
 				}
 				case "string":
 				{
-					result="'"+(object as String)+"$String'";
+					result='"'+(object as String)+'$String"';
 					break;
 				}
 				case "number":
 				{
-					result="'"+(object as Number).toString()+"$Number'";
+					result='"'+(object as Number).toString()+'$Number"';
 					break;
 				}
 				case "boolean":
 				{
-					result="'"+(object as Boolean).toString()+"$Boolean'";
+					result='"'+(object as Boolean).toString()+'$Boolean"';
 					break;
 				}
 				case "object":
@@ -123,9 +123,13 @@ package SuperMap.Web.Util
 						var myArray:Array=(object as Array);
 						for(var i:Number=0;i<myArray.length;i++)
 						{
-							if(i==0)
+							if((i==0)&&(myArray.length!=1))
 							{
 								myArray[i]="["+this.objectToString(myArray[i]);
+							}
+							else if((i==0)&&(myArray.length==1))
+							{
+								myArray[i]="["+this.objectToString(myArray[i])+"]";
 							}
 							else if(i==myArray.length-1)
 							{
@@ -142,7 +146,7 @@ package SuperMap.Web.Util
 					{
 						//暂不开放
 						var resultTime:Date=object as Date;
-						var str:String="'"+resultTime.time.toString()+"$Date'";
+						var str:String='"'+resultTime.time.toString()+'$Date"';
 						result= str;
 					}
 					else

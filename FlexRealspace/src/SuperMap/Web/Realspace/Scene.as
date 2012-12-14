@@ -240,7 +240,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_autoLockOffset(value:Point3D):void
 		{
-			var realArgument:Array=[value+"$Object"];
+			var realArgument:Array=[value.KEY.toString()+"$Object"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -271,7 +271,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_autoLockTarget(value:GeoModel):void
 		{
-			var realArgument:Array=[value+"$Object"];
+			var realArgument:Array=[value.KEY.toString()+"$Object"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -301,7 +301,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_bounds(value:Rectangle2D):void
 		{
-			var realArgument:Array=[value+"$Object"];
+			var realArgument:Array=[value.KEY.toString()+"$Object"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -333,7 +333,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_camera(value:Camera):void
 		{
-			var realArgument:Array=[value+"$Object"];
+			var realArgument:Array=[value.KEY.toString()+"$Object"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -380,7 +380,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_firstPersonCamera(value:Camera):void
 		{
-			var realArgument:Array=[value+"$Object"];
+			var realArgument:Array=[value.KEY.toString()+"$Object"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -442,7 +442,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_fov(value:Number):void
 		{
-			var realArgument:Array=[value+"$Object"];
+			var realArgument:Array=[value.toString()+"$Object"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -488,7 +488,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_isFirstPersonView(value:Boolean):void
 		{
-			var realArgument:Array=[value+"$Boolean"];
+			var realArgument:Array=[value.toString()+"$Boolean"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -626,7 +626,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_terrainExaggeration(value:Number):void
 		{
-			var realArgument:Array=[value+"$Number"];
+			var realArgument:Array=[value.toString()+"$Number"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -691,7 +691,7 @@ package SuperMap.Web.Realspace
 		 */
 		public function set_type(value:Number):void
 		{
-			var realArgument:Array=[value+"$Number"];
+			var realArgument:Array=[value.toString()+"$Number"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,

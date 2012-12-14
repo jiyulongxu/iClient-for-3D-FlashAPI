@@ -224,6 +224,7 @@ SuperMap.Web.Util.ApplicationManager.createSoleKey=function(){
     var soleKey=SuperMap.Web.Util.ApplicationManager.verifySoleKey(nowData.getTime()*2);
     return soleKey;
 }
+SuperMap.Web.Util.ApplicationManager.keyId=0;
 /**
  * 计算key
  * @param timeNumber
@@ -232,7 +233,8 @@ SuperMap.Web.Util.ApplicationManager.createSoleKey=function(){
 SuperMap.Web.Util.ApplicationManager.verifySoleKey=function(timeNumber){
     if(SuperMap.Web.Util.ApplicationManager.classHashTable.contains(timeNumber))
     {
-        timeNumber+=1;
+        SuperMap.Web.Util.ApplicationManager.keyId++;
+        timeNumber+=SuperMap.Web.Util.ApplicationManager.keyId;
         arguments.callee(timeNumber);
     }
     return timeNumber;
