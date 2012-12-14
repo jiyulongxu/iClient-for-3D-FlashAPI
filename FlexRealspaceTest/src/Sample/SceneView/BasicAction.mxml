@@ -70,7 +70,7 @@
 			}
 			private function handler(event:CallBackEvent):void
 			{
-				var selection3Ds:Array=event.data as Array;
+				var selection3Ds:Array=event.data[0] as Array;
 				for(var i:Number=0;i<selection3Ds.length;i++)
 				{
 					//获取选择集中被选中对象的数目

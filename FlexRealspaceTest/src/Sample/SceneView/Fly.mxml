@@ -45,7 +45,6 @@
 			
 			protected function start_clickHandler(event:MouseEvent):void
 			{
-				// TODO Auto-generated method stub
 				var camera:SuperMap.Web.Realspace.Camera=new SuperMap.Web.Realspace.Camera(parseFloat(longitude.text),parseFloat(latitude.text),parseFloat(altitude.text));
 				scene.get_flyingOperator().flyTo(camera,parseFloat(flyingTime.text)*1000,flyingMode.selectedIndex+1);
 			}
