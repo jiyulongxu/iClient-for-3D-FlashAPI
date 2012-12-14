@@ -14,35 +14,35 @@
 			
 			import mx.events.FlexEvent;
 			
-			private var sceneControl:SceneControl;
-			private var scene:SuperMap.Web.Realspace.Scene;
-			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
+			private var m_sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
 			//程序初始化所有控件之后
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
 				//初始化三维场景控件实例
-				sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+				m_sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
 			}
 			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
 			private function succeedCallBack(event:CallBackEvent):void
 			{
 				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
-				scene=sceneControl.get_scene();
+				m_scene=m_sceneControl.get_scene();
 				
 				//打开场景
-				scene.open(sceneUrl,"scene");
+				m_scene.open(m_sceneUrl,"scene");
 				
 				//获取场景中的地形图层
-				var terrainLayer:TerrainLayer = scene.get_terrainLayers().get_item("Beijing@RealspaceSample_Terrain");
+				var terrainLayer:TerrainLayer = m_scene.get_terrainLayers().get_item("Beijing@RealspaceSample_Terrain");
 				
 				if (terrainLayer != null) 
 				{
 					//获取图层的地理范围，并飞行到该范围
 					var geobound:Rectangle2D = terrainLayer.get_bounds();
-					scene.get_flyingOperator().flyToBounds(geobound);
+					m_scene.get_flyingOperator().flyToBounds(geobound);
 					//
-					scene.set_terrainExaggeration(10);
-					scene.refresh();
+					m_scene.set_terrainExaggeration(10);
+					m_scene.refresh();
 				}	
 			}
 			//控件初始化失败后的回调函数
@@ -54,9 +54,9 @@
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				//拉伸地形
-				scene.set_terrainExaggeration(parseFloat(scale.text));
+				m_scene.set_terrainExaggeration(parseFloat(scale.text));
 				//刷新场景
-				scene.refresh();
+				m_scene.refresh();
 			}
 			
 		]]>

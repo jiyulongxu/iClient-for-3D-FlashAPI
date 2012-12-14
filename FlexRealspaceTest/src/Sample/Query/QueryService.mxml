@@ -23,13 +23,13 @@
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
-			private var sceneControl:SceneControl;
-			private var scene:SuperMap.Web.Realspace.Scene;
-			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
-			private var queryServiceUrl:String="http://localhost:8090/iserver/services/data-realspace/rest/data/featureResults";
-			private var queryDatasetName:String;
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
+			private var m_sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			private var m_queryServiceUrl:String="http://localhost:8090/iserver/services/data-realspace/rest/data/featureResults";
+			private var m_queryDatasetName:String;
 			[Bindable] 
-			public var cards:ArrayCollection = new ArrayCollection( 
+			public var m_cards:ArrayCollection = new ArrayCollection( 
 				[ {label:"PipeLine3D",data:"PipeLine3D"},  
 					{label:"PipePoint3D",data:"PipePoint3D"}]); 
 			
@@ -37,15 +37,15 @@
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
 				//初始化三维场景控件实例
-				sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+				m_sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
 			}
 			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
 			private function succeedCallBack(event:CallBackEvent):void
 			{
 				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
-				scene=sceneControl.get_scene();
+				m_scene=m_sceneControl.get_scene();
 				//打开场景
-				scene.open(sceneUrl,"scene_query3D");
+				m_scene.open(m_sceneUrl,"scene_query3D");
 			}
 			//控件初始化失败后的回调函数
 			private function failedCallBack(event:CallBackEvent):void
@@ -56,9 +56,9 @@
 			protected function doSqlQuery(event:MouseEvent):void
 			{
 				//移除之前生成的跟踪图层
-				scene.get_trackingLayer3D().removeAll();
+				m_scene.get_trackingLayer3D().removeAll();
 				//获取查询的数据集的名称
-				queryDatasetName=comboBoxDatasetName.selectedItem.data as String;
+				m_queryDatasetName=comboBoxDatasetName.selectedItem.data as String;
 				//获取查询的过滤条件
 				var attributeFilter:String= textInputAttributeFilter.text;
 				//创建一个过滤对象
@@ -68,11 +68,11 @@
 				//创建一个SQL查询参数对象类的对象
 				var getFeaturesBySQLParameters:GetFeature3DsBySQLParameters = new GetFeature3DsBySQLParameters();
 				//设置查询的数据集名称数组
-				getFeaturesBySQLParameters.set_datasetNames(["3DDataset:" +queryDatasetName]);
+				getFeaturesBySQLParameters.set_datasetNames(["3DDataset:" +m_queryDatasetName]);
 				//设置查询的 SQL 条件。
 				getFeaturesBySQLParameters.set_filterParameter(filterParameter);
 				//创建一个服务对象
-				var getFeaturesBySQLService:GetFeature3DsBySQLService = new GetFeature3DsBySQLService(queryServiceUrl);
+				var getFeaturesBySQLService:GetFeature3DsBySQLService = new GetFeature3DsBySQLService(m_queryServiceUrl);
 				//注册查询成功的回调函数
 				getFeaturesBySQLService.add_processCompleted(onQueryComplete);
 				//发送查询请求服务
@@ -97,7 +97,7 @@
 						//获取标识三维要素对象在三维要素对象集合 Feature3Ds中的位置（索引）。
 						var id:Number = feature3D.get_id();
 						//获取三维图层集合中指定序号（Number 类型）的三维图层对象。
-						var layer3d:Layer3D = scene.get_layer3Ds().get_item(comboBoxDatasetName.selectedIndex);
+						var layer3d:Layer3D = m_scene.get_layer3Ds().get_item(comboBoxDatasetName.selectedIndex);
 						//在图层中找到这个三维要素对象
 						var feature3DInLayer:Feature3D = layer3d.findFeature3DByID(id);
 						//获取拉伸高度值，单位为米。
@@ -119,7 +119,7 @@
 						//设置三维地理要素的风格。
 						feature3D.set_style3D(resulstStyle3D);
 						//向跟踪图层添加一个要素对象，并设置标签信息。
-						scene.get_trackingLayer3D().add(feature3D, "feature3D");
+						m_scene.get_trackingLayer3D().add(feature3D, "feature3D");
 					}
 				}
 				else
@@ -127,13 +127,13 @@
 					trace("范围内没有找到符合条件的三维几何体。");
 				}
 				//设置场景当前状态为漫游
-				sceneControl.set_sceneAction(new SuperMap.Web.UI.Action3Ds.Pan(sceneControl));
+				m_sceneControl.set_sceneAction(new SuperMap.Web.UI.Action3Ds.Pan(m_sceneControl));
 			}
 			//清空查询遗留的痕迹
 			private function clearResult(event:MouseEvent):void
 			{
 				//移除之前生成的跟踪图层
-				scene.get_trackingLayer3D().removeAll();
+				m_scene.get_trackingLayer3D().removeAll();
 			}
 		]]>
 	</fx:Script>
@@ -143,7 +143,7 @@
 	<Util:SceneDiv id="mySceneControl" x="10" y="88" width="935" height="502">
 	</Util:SceneDiv>
 	<s:Label x="10" y="15" text="查询的数据集名称："/>
-	<s:ComboBox id="comboBoxDatasetName" dataProvider="{cards}" selectedIndex="0" x="126" y="10"/>
+	<s:ComboBox id="comboBoxDatasetName" dataProvider="{m_cards}" selectedIndex="0" x="126" y="10"/>
 	<s:Label x="276" y="16" text="设置查询过滤条件（例如，SMID&gt;15）："/>
 	<s:TextInput id="textInputAttributeFilter" x="504" y="10"/>
 	<s:Button x="640" y="10" label="SQL查询" click="doSqlQuery(event)"/>

@@ -15,29 +15,29 @@
 			import SuperMap.Web.Util.CallBackEvent;
 			
 			import mx.events.FlexEvent;
-			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
-			private var sceneControl:SceneControl;
-			private var scene:SuperMap.Web.Realspace.Scene;
+			private var m_sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
 			
 			//程序初始化所有控件之后
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
 				//初始化三维场景控件实例
-				sceneControl=new SceneControl(mySceneDiv,succeedCallBack,failedCallBack);
+				m_sceneControl=new SceneControl(mySceneDiv,succeedCallBack,failedCallBack);
 			}
 			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
 			private function succeedCallBack(event:CallBackEvent):void
 			{
 				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
-				scene=sceneControl.get_scene();
+				m_scene=m_sceneControl.get_scene();
 				//打开场景
-				scene.open(sceneUrl,"scene");
+				m_scene.open(m_sceneUrl,"scene");
 				//获取场景中的第一个图层
-				var layer3D:Layer3D = scene.get_layer3Ds().get_item("Ground@OlympicGreen");
+				var layer3D:Layer3D = m_scene.get_layer3Ds().get_item("Ground@OlympicGreen");
 				if (layer3D != null) {
 					//获取图层的地理范围，并飞行到该范围
 					var geobound:Rectangle2D = layer3D.get_bounds();
-					scene.get_flyingOperator().flyToBounds(geobound);
+					m_scene.get_flyingOperator().flyToBounds(geobound);
 				}
 			}
 			//控件初始化失败后的回调函数
@@ -49,19 +49,19 @@
 			protected function pan(event:MouseEvent):void
 			{
 				//设置控件的当前操作为漫游
-				var panAction:Pan = new SuperMap.Web.UI.Action3Ds.Pan(sceneControl);
-				sceneControl.set_sceneAction(panAction); 
+				var panAction:Pan = new SuperMap.Web.UI.Action3Ds.Pan(m_sceneControl);
+				m_sceneControl.set_sceneAction(panAction); 
 			}
 			//距离量算
 			protected function measureDis(event:MouseEvent):void
 			{
 				//设置控件的当前操作为距离量算
-				var measureDisAction:MeasureDistance = new MeasureDistance(sceneControl);
-				sceneControl.set_sceneAction(measureDisAction); 
+				var measureDisAction:MeasureDistance = new MeasureDistance(m_sceneControl);
+				m_sceneControl.set_sceneAction(measureDisAction); 
 				
 				//给距离量算事件和量算结束事件注册回调函数
-				sceneControl.addEvent("measureDistance", disHandler);
-				sceneControl.addEvent("measureDistanceFinished", disFinishedHandler);
+				m_sceneControl.addEvent("measureDistance", disHandler);
+				m_sceneControl.addEvent("measureDistanceFinished", disFinishedHandler);
 			}
 			
 			//距离量算过程中的回调事件
@@ -89,12 +89,12 @@
 			protected function measureArea(event:MouseEvent):void
 			{
 				//设置控件的当前操作为面积量算
-				var measureAreaAction:MeasureArea = new MeasureArea (sceneControl);
-				sceneControl.set_sceneAction(measureAreaAction); 
+				var measureAreaAction:MeasureArea = new MeasureArea (m_sceneControl);
+				m_sceneControl.set_sceneAction(measureAreaAction); 
 				
 				//给面积量算事件和量算结束事件注册回调函数
-				sceneControl.addEvent("measureArea", areaHandler);
-				sceneControl.addEvent("measureAreaFinished", areaFinishedHandler);
+				m_sceneControl.addEvent("measureArea", areaHandler);
+				m_sceneControl.addEvent("measureAreaFinished", areaFinishedHandler);
 			}
 			//面积量算过程中的回调事件
 			private function areaHandler(event:CallBackEvent):void
@@ -120,12 +120,12 @@
 			protected function measureHeight(event:MouseEvent):void
 			{
 				//设置控件的当前操作为高程量算
-				var measureHeightAction:MeasureHeight= new MeasureHeight(sceneControl);
-				sceneControl.set_sceneAction(measureHeightAction); 
+				var measureHeightAction:MeasureHeight= new MeasureHeight(m_sceneControl);
+				m_sceneControl.set_sceneAction(measureHeightAction); 
 				
 				//给高程量算事件和量算结束事件注册回调函数
-				sceneControl.addEvent("measureHeight", heightHandler);
-				sceneControl.addEvent("measureHeightFinished", heightFinishedHandler);
+				m_sceneControl.addEvent("measureHeight", heightHandler);
+				m_sceneControl.addEvent("measureHeightFinished", heightFinishedHandler);
 			}
 			//高程量算过程中的回调事件
 			private function heightHandler(event:CallBackEvent):void

@@ -14,26 +14,26 @@
 			
 			import mx.events.FlexEvent;
 			
-			private var sceneControl:SceneControl;
-			private var scene:SuperMap.Web.Realspace.Scene;
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
 			
 			//程序初始化所有控件之后
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
 				//初始化三维场景控件实例
-				sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+				m_sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
 			}
 			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
 			private function succeedCallBack(event:CallBackEvent):void
 			{
 				// 飞行结束事件绑定
-				sceneControl.addEvent("flownEnd", flyingend);
+				m_sceneControl.addEvent("flownEnd", flyingend);
 				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
-				scene=sceneControl.get_scene();
+				m_scene=m_sceneControl.get_scene();
 				///新建一个照相机对象，把照相机的位置设置为中国的中心点
 				var camera:SuperMap.Web.Realspace.Camera=new SuperMap.Web.Realspace.Camera(104.348,28.708,10288740.0);
 				//将场景的视点移动到中国区域
-				scene.get_flyingOperator().flyTo(camera,5000);
+				m_scene.get_flyingOperator().flyTo(camera,5000);
 			}
 			//控件初始化失败后的回调函数
 			private function failedCallBack(event:CallBackEvent):void

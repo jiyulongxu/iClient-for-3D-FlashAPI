@@ -17,32 +17,32 @@
 			
 			import mx.events.FlexEvent;
 			
-			private var sceneControl:SceneControl;
-			private var scene:SuperMap.Web.Realspace.Scene;
-			private var layer3Ds:Layer3Ds;
-			private var terrainLayers:TerrainLayers;
-			private var layer3DServicesList:Layer3DServicesList;
-			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
+			private var m_layer3Ds:Layer3Ds;
+			private var m_terrainLayers:TerrainLayers;
+			private var m_layer3DServicesList:Layer3DServicesList;
+			private var m_sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
 				//初始化三维场景控件实例
-				sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+				m_sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
 			}
 			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
 			private function succeedCallBack(event:CallBackEvent):void
 			{
 				//获取三维图层信息列表对象实例
-				layer3DServicesList = sceneControl.get_layer3DServicesList();
+				m_layer3DServicesList = m_sceneControl.get_layer3DServicesList();
 				
-				scene=sceneControl.get_scene();
+				m_scene=m_sceneControl.get_scene();
 				//获取三维图层集合 
-				layer3Ds = scene.get_layer3Ds();
+				m_layer3Ds = m_scene.get_layer3Ds();
 				
 				//获取地形图层集合
-				terrainLayers = scene.get_terrainLayers();
+				m_terrainLayers = m_scene.get_terrainLayers();
 				
 				//从指定的服务器获取场景的图层服务信息，获取成功返回 True
-				var bLoad:Boolean = layer3DServicesList.load(sceneUrl, "scene");
+				var bLoad:Boolean = m_layer3DServicesList.load(m_sceneUrl, "scene");
 				if(!bLoad)
 				{
 					trace("获取图层服务信息失败！");
@@ -52,7 +52,7 @@
 				///新建一个照相机对象，把照相机的位置设置为中国的中心点
 				var camera:SuperMap.Web.Realspace.Camera=new SuperMap.Web.Realspace.Camera(104.348,28.708,10288740.0);
 				//将场景的视点移动到中国区域
-				scene.get_flyingOperator().flyTo(camera,5000);
+				m_scene.get_flyingOperator().flyTo(camera,5000);
 			}
 			//控件初始化失败后的回调函数
 			private function failedCallBack(event:CallBackEvent):void
@@ -82,30 +82,30 @@
 			}
 			protected function button6_clickHandler(event:MouseEvent):void
 			{
-				layer3Ds.removeAll();
-				terrainLayers.removeAll();
+				m_layer3Ds.removeAll();
+				m_terrainLayers.removeAll();
 			}
 			
 			//往场景中添加指定图层
 			private function loadLayer(addLayerName:String):void
 			{
 				//获取指定的图层信息，包括图层名称、数据名称、图层类型
-				var layer3DServiceInfo:Layer3DServiceInfo = layer3DServicesList.get_item(addLayerName);
+				var layer3DServiceInfo:Layer3DServiceInfo = m_layer3DServicesList.get_item(addLayerName);
 				var layerName:String = layer3DServiceInfo.get_name();
 				var dataName:String = layer3DServiceInfo.get_dataName();
 				var layer3DType:Number = layer3DServiceInfo.get_type();
 				//如果为地形图层，则使用 TerrainLayers 加载，如果为模型、KML或者矢量图层则使用 Layer3Ds 加载
 				if(layer3DType == SuperMap.Web.Realspace.Layer3DType.TERRAIN)
 				{
-					terrainLayers.add(sceneUrl, layerName, dataName, false);
-					var geobound1:Rectangle2D = terrainLayers.get_item(layerName).get_bounds();
-					scene.get_flyingOperator().flyToBounds(geobound1);
+					m_terrainLayers.add(m_sceneUrl, layerName, dataName, false);
+					var geobound1:Rectangle2D = m_terrainLayers.get_item(layerName).get_bounds();
+					m_scene.get_flyingOperator().flyToBounds(geobound1);
 				}
 				else
 				{
-					layer3Ds.add(sceneUrl, layerName, dataName, layer3DType, false);
-					var geobound2:Rectangle2D = layer3Ds.get_item(layerName).get_bounds();
-					scene.get_flyingOperator().flyToBounds(geobound2);
+					m_layer3Ds.add(m_sceneUrl, layerName, dataName, layer3DType, false);
+					var geobound2:Rectangle2D = m_layer3Ds.get_item(layerName).get_bounds();
+					m_scene.get_flyingOperator().flyToBounds(geobound2);
 				}
 			}
 			

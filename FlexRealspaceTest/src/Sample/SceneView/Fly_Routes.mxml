@@ -19,15 +19,15 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
-			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
-			private var sceneControl:SceneControl;
-			private var scene:SuperMap.Web.Realspace.Scene;
-			private var flyManager:FlyManager;
-			private var flyRoutes:FlyRoutes;
-			private var flyRoute:FlyRoute;
-			private var routeLoaded:Boolean;
+			private var m_sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
+			private var m_flyManager:FlyManager;
+			private var m_flyRoutes:FlyRoutes;
+			private var m_flyRoute:FlyRoute;
+			private var m_routeLoaded:Boolean;
 			[Bindable] 
-			public var cards:ArrayCollection = new ArrayCollection( 
+			public var m_cards:ArrayCollection = new ArrayCollection( 
 				[ {label:"鸟巢道路飞行路线", data:"http://localhost:8090/RealspaceSample/FlyRoutes.fpf"},  
 					{label:"会议中心飞行路线", data:"http://localhost:8090/RealspaceSample/NewSceneRoutes.fpf"}]); 
 			
@@ -35,23 +35,23 @@
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
 			{
 				//初始化三维场景控件实例
-				sceneControl=new SceneControl(mySceneDiv,succeedCallBack,failedCallBack);
+				m_sceneControl=new SceneControl(mySceneDiv,succeedCallBack,failedCallBack);
 			}
 			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
 			private function succeedCallBack(event:CallBackEvent):void
 			{
 				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
-				scene=sceneControl.get_scene();
+				m_scene=m_sceneControl.get_scene();
 				//获取FlyManager对象
-				flyManager = scene.get_flyManager();
+				m_flyManager = m_scene.get_flyManager();
 				//打开场景
-				scene.open(sceneUrl,"scene_olympicgreen");
+				m_scene.open(m_sceneUrl,"scene_olympicgreen");
 				//获取场景中的第一个图层
-				var layer3D:Layer3D = scene.get_layer3Ds().get_item(0);
+				var layer3D:Layer3D = m_scene.get_layer3Ds().get_item(0);
 				if (layer3D != null) {
 					//获取图层的地理范围，并飞行到该范围
 					var geobound:Rectangle2D = layer3D.get_bounds();
-					scene.get_flyingOperator().flyToBounds(geobound);
+					m_scene.get_flyingOperator().flyToBounds(geobound);
 				}
 			}
 			//控件初始化失败后的回调函数
@@ -63,33 +63,33 @@
 			//根据飞行路径获取相应的基础信息
 			protected function setFilePath(event:MouseEvent):void
 			{
-				if(flyManager!=null)
+				if(m_flyManager!=null)
 				{
-					if(flyManager.get_flyStatus()==FlyStatus.FSTOP)
+					if(m_flyManager.get_flyStatus()==FlyStatus.FSTOP)
 					{
 						//获取飞行路线
-						flyRoutes=flyManager.get_routes();
-						if(flyRoutes!=null)
+						m_flyRoutes=m_flyManager.get_routes();
+						if(m_flyRoutes!=null)
 						{
 							//获取飞行路线地址
 							var filePath:String= comboBoxFilePath.selectedItem.data as String;
 							//导入路线，并且判定是否成功
-							if(flyRoutes.fromFile(filePath)==false)
+							if(m_flyRoutes.fromFile(filePath)==false)
 							{
 								return;
 							}
-							flyRoute=flyRoutes.get_currentRoute();
+							m_flyRoute=m_flyRoutes.get_currentRoute();
 							//读取飞行路线的信息并初始化界面初始值
-							textInputSpeed.text=flyRoute.get_speed().toString();
-							textInputTime.text=flyManager.get_duration().toString();
-							checkBoxAltitudeFixed.selected=flyRoute.get_isAltitudeFixed();
-							checkBoxHeadingFixed.selected=flyRoute.get_isHeadingFixed();
-							checkBoxTiltFixed.selected=flyRoute.get_isTiltFixed();
-							checkBoxFlyingLoop.selected=flyRoute.get_isFlyingLoop();
-							checkBoxFlyAlongTheRoute.selected=flyRoute.get_isFlyAlongTheRoute();
-							checkBoxLinesVisible.selected=flyRoute.get_isLinesVisible();
-							checkBoxStopsVisible.selected=flyRoute.get_isStopsVisible();
-							routeLoaded=true;
+							textInputSpeed.text=m_flyRoute.get_speed().toString();
+							textInputTime.text=m_flyManager.get_duration().toString();
+							checkBoxAltitudeFixed.selected=m_flyRoute.get_isAltitudeFixed();
+							checkBoxHeadingFixed.selected=m_flyRoute.get_isHeadingFixed();
+							checkBoxTiltFixed.selected=m_flyRoute.get_isTiltFixed();
+							checkBoxFlyingLoop.selected=m_flyRoute.get_isFlyingLoop();
+							checkBoxFlyAlongTheRoute.selected=m_flyRoute.get_isFlyAlongTheRoute();
+							checkBoxLinesVisible.selected=m_flyRoute.get_isLinesVisible();
+							checkBoxStopsVisible.selected=m_flyRoute.get_isStopsVisible();
+							m_routeLoaded=true;
 						}
 					}
 				}
@@ -101,104 +101,104 @@
 			//开始飞行
 			protected function play(event:MouseEvent):void
 			{
-				if(routeLoaded)
+				if(m_routeLoaded)
 				{
 					//重新获取速度和时长
-					textInputSpeed.text=flyRoute.get_speed().toString();
-					textInputTime.text=flyManager.get_duration().toString();
-					if (flyManager == null && flyRoutes == null &&	flyManager.get_flyStatus() == SuperMap.Web.Realspace.FlyStatus.FPLAY)
+					textInputSpeed.text=m_flyRoute.get_speed().toString();
+					textInputTime.text=m_flyManager.get_duration().toString();
+					if (m_flyManager == null && m_flyRoutes == null &&	m_flyManager.get_flyStatus() == SuperMap.Web.Realspace.FlyStatus.FPLAY)
 					{
 						return;
 					}
 					else
 					{
-						scene.set_type(SuperMap.Web.Realspace.SceneType.Flat);
-						flyManager.play();
+						m_scene.set_type(SuperMap.Web.Realspace.SceneType.Flat);
+						m_flyManager.play();
 					}
 				}
 			}
 			//暂停飞行
 			protected function pause(event:MouseEvent):void
 			{
-				if (flyManager == null)
+				if (m_flyManager == null)
 				{
 					return;
 				}
-				flyManager.pause();
+				m_flyManager.pause();
 			}
 			//停止飞行
 			protected function stop(event:MouseEvent):void
 			{
-				if (flyManager == null)
+				if (m_flyManager == null)
 				{
 					return;
 				}
-				flyManager.stop();
+				m_flyManager.stop();
 			}
 			//设置速度
 			protected function resetSpeed(event:MouseEvent):void
 			{
-				if (routeLoaded) {
+				if (m_routeLoaded) {
 					//设置速度
-					flyRoute.set_speed(parseFloat(textInputSpeed.text));
+					m_flyRoute.set_speed(parseFloat(textInputSpeed.text));
 					//获取当前飞行需要的时间
-					textInputTime.text=flyManager.get_duration().toString();
+					textInputTime.text=m_flyManager.get_duration().toString();
 				}
 			}
 			//设置时间
 			protected function resetTime(event:MouseEvent):void
 			{
-				if (routeLoaded) {
+				if (m_routeLoaded) {
 					//设置时间
-					flyManager.set_duration(parseFloat(textInputTime.text));
+					m_flyManager.set_duration(parseFloat(textInputTime.text));
 					//获取当前飞行需要的速度
-					textInputSpeed.text=flyRoute.get_speed().toString();
+					textInputSpeed.text=m_flyRoute.get_speed().toString();
 				}
 			}
 			//设置速率，飞行过程中可以通过设置速率来控制飞行的快慢
 			protected function resetRate(event:MouseEvent):void
 			{
-				if (routeLoaded)
+				if (m_routeLoaded)
 				{
 					//设置速率
-					flyManager.set_playRate(parseFloat(textInputRate.text));
+					m_flyManager.set_playRate(parseFloat(textInputRate.text));
 				}
 			}
 			
 			//是否锁定高度
 			protected function resetAltitudeFixed(event:Event):void
 			{
-				flyRoute.set_isAltitudeFixed((event.target as CheckBox).selected);
+				m_flyRoute.set_isAltitudeFixed((event.target as CheckBox).selected);
 			}
 			//是否锁定方位角
 			protected function resetHeadingFixed(event:Event):void
 			{
-				flyRoute.set_isHeadingFixed((event.target as CheckBox).selected);
+				m_flyRoute.set_isHeadingFixed((event.target as CheckBox).selected);
 			}
 			//是否锁定倾斜角
 			protected function resetTiltFixed(event:Event):void
 			{
-				flyRoute.set_isTiltFixed((event.target as CheckBox).selected);
+				m_flyRoute.set_isTiltFixed((event.target as CheckBox).selected);
 			}
 			//是否循环飞行
 			protected function resetFlyingLoop(event:Event):void
 			{
-				flyRoute.set_isFlyingLoop((event.target as CheckBox).selected);
+				m_flyRoute.set_isFlyingLoop((event.target as CheckBox).selected);
 			}
 			//是否沿线飞行
 			protected function resetFlyAlongTheRoute(event:Event):void
 			{
-				flyRoute.set_isFlyAlongTheRoute((event.target as CheckBox).selected);
+				m_flyRoute.set_isFlyAlongTheRoute((event.target as CheckBox).selected);
 			}
 			//是否设置线路可见
 			protected function resetLinesVisible(event:Event):void
 			{
-				flyRoute.set_isLinesVisible((event.target as CheckBox).selected);
+				m_flyRoute.set_isLinesVisible((event.target as CheckBox).selected);
 			}
 			//是否设置站点可见
 			protected function resetStopsVisible(event:Event):void
 			{
-				flyRoute.set_isStopsVisible((event.target as CheckBox).selected);
+				m_flyRoute.set_isStopsVisible((event.target as CheckBox).selected);
 			}
 			
 		]]>
@@ -209,7 +209,7 @@
 	<Util:SceneDiv id="mySceneDiv" x="242" y="10" width="909" height="708">
 	</Util:SceneDiv>
 	<s:Label x="10" y="26"  text="飞行路线："/>
-	<s:ComboBox id="comboBoxFilePath" dataProvider="{cards}" selectedIndex="0" x="10" y="47"/>
+	<s:ComboBox id="comboBoxFilePath" dataProvider="{m_cards}" selectedIndex="0" x="10" y="47"/>
 	<s:Button x="164" y="47" label="设置" click="setFilePath(event)"/>
 	<s:Label x="10" y="78" text="速度（千米/小时）："/>
 	<s:TextInput id="textInputSpeed" x="10" y="98" width="146"/>
