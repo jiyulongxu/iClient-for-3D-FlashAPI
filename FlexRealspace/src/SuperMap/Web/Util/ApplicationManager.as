@@ -5,6 +5,7 @@ package SuperMap.Web.Util
 	import SuperMap.Web.Core.GeoLine3D;
 	import SuperMap.Web.Core.GeoRegion3D;
 	import SuperMap.Web.Realspace.EventObject;
+	import SuperMap.Web.Realspace.Selection3D;
 	import SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsEventArgs;
 	
 	import flash.external.ExternalInterface;
@@ -150,6 +151,10 @@ package SuperMap.Web.Util
 						if(resultType=="SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsEventArgs")
 						{
 							var sdsd4:GetFeature3DsEventArgs=new GetFeature3DsEventArgs({key:0,isNew:false});
+						}
+						if(resultType=="SuperMap.Web.Realspace.Selection3D")
+						{
+							var sdsd5:Selection3D=new Selection3D({key:0,isNew:false});
 						}
 						var resultClass:Class=getDefinitionByName(resultType) as Class;
 						result= new resultClass({key:parseInt(resultValue),isNew:false});

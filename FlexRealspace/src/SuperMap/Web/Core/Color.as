@@ -23,7 +23,7 @@ package SuperMap.Web.Core
 		 */
 		public function Color(red:Object=0,green:Number=0,blue:Number=0,alpha:Number=255)
 		{
-			var key:Number;  
+			var key:Number;
 			var isNew:Boolean;
 			var array:Object;
 			if(red is Number)

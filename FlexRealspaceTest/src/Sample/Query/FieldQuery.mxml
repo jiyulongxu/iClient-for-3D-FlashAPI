@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:Util="SuperMap.Web.Util.*"
+			   minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import SuperMap.Web.Core.Rectangle2D;
+			import SuperMap.Web.Realspace.Camera;
+			import SuperMap.Web.Realspace.EventObject;
+			import SuperMap.Web.Realspace.FlyingOperator;
+			import SuperMap.Web.Realspace.Layer3D;
+			import SuperMap.Web.Realspace.Layer3DServiceInfo;
+			import SuperMap.Web.Realspace.Layer3DServicesList;
+			import SuperMap.Web.UI.Action3Ds.Pan;
+			import SuperMap.Web.UI.Action3Ds.Select;
+			import SuperMap.Web.UI.Controls.SceneControl;
+			import SuperMap.Web.Util.CallBackEvent;
+			
+			import mx.events.FlexEvent;
+			
+			private var sceneControl:SceneControl;
+			private var scene:SuperMap.Web.Realspace.Scene;
+			private var sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			
+			//程序初始化所有控件之后
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//初始化三维场景控件实例
+				sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+			}
+			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
+			private function succeedCallBack(event:CallBackEvent):void
+			{
+				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
+				scene=sceneControl.get_scene();
+				//获取三维图层信息列表对象实例
+				var layer3DServicesList:Layer3DServicesList= sceneControl.get_layer3DServicesList();
+				//指定图层名字
+				var layerName:String = "buildings@RealspaceSample";
+				//从指定的服务器获取场景的图层服务信息，获取成功返回 True
+				var bLoad:Boolean = layer3DServicesList.load(sceneUrl, "scene");
+				if(bLoad)
+				{
+					//获取图层服务信息
+					var layer3DServiceInfo:Layer3DServiceInfo= layer3DServicesList.get_item(layerName);
+					//获取图层对应的数据名称。
+					var dataName:String = layer3DServiceInfo.get_dataName();			
+					//打开图层
+					var layer3D:Layer3D= scene.get_layer3Ds().add(sceneUrl, layerName, dataName, SuperMap.Web.Realspace.Layer3DType.VECTOR);
+					
+					if (layer3D != null) 
+					{
+						//获取图层的地理范围，并飞行到该范围
+						var geobound:Rectangle2D= layer3D.get_bounds();   
+						scene.get_flyingOperator().flyToBounds(geobound);
+					}
+				}
+				//为场景控件添加一个选择侦听事件。
+				sceneControl.addEvent("objectSelected",getFieldandValue);
+				
+			}
+			//控件初始化失败后的回调函数
+			private function failedCallBack(event:CallBackEvent):void
+			{
+				trace("Realspace initialized failed!");
+			}
+			//开始查询，其实是开始选择
+			protected function buttonQuery_clickHandler(event:MouseEvent):void
+			{
+				//设置当前场景为选择状态
+				var selectAction:Select = new Select(sceneControl);
+				sceneControl.set_sceneAction(selectAction);	
+			}
+			//漫游
+			protected function buttonPan_clickHandler(event:MouseEvent):void
+			{
+				//获取选择的图层
+				var layer3D:Layer3D = scene.get_layer3Ds().get_item("buildings@RealspaceSample");
+				//清除三维图层选择集中的内容，并且同时清除被选中元素的高亮效果。
+				layer3D.releaseSelection();
+				//切换漫游Action
+				var panAction:Pan = new Pan(sceneControl);
+				sceneControl.set_sceneAction(panAction); 
+			}
+			//选择时触发的回调函数
+			private function getFieldandValue(event:CallBackEvent):void
+			{
+				//获取选择的图层
+				var layer3D:Layer3D = scene.get_layer3Ds().get_item("buildings@RealspaceSample");
+				var fieldInfo:String = "";
+				//获取矢量图层属性字段的个数。
+				var fieldCount:Number = layer3D.get_fieldInfos().get_count();
+				for(var i:Number=0;i<fieldCount;i++)
+				{
+					//获取属性字段的名称。
+					fieldInfo += layer3D.get_fieldInfos().get_item(i).get_name() + ":";
+					//根据字段id获取选择集 Selection3D 中第一个对象的字段值。
+					fieldInfo += layer3D.getFieldValue(i) + "; ";
+				}
+				//显示所有这些信息
+				richTextAttribute.text="属性："+fieldInfo;
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<Util:SceneDiv id="mySceneControl" x="211" y="10" width="734" height="611">
+	</Util:SceneDiv>
+	<s:Button id="buttonQuery" x="10" y="10" label="查询" click="buttonQuery_clickHandler(event)"/>
+	<s:Button id="buttonPan" x="88" y="10" label="漫游" click="buttonPan_clickHandler(event)"/>
+	<s:RichText id="richTextAttribute" x="10" y="39" width="193" height="167" text="属性："/>
+</s:Application>

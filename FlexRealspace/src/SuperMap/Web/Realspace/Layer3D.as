@@ -59,7 +59,7 @@ package SuperMap.Web.Realspace
 		public function findFeature3DByID(id:Number):Feature3D
 		{
 			//var feature3DKey:Number=this.getSoleKey();
-			var realArgument:Array=[id.toString()+"$Number"];;
+			var realArgument:Array=[id.toString()+"$Number"];
 			var array:Object={
 				action:"FUNCTION",
 				isNew:true,
@@ -83,6 +83,50 @@ package SuperMap.Web.Realspace
 					isReturn:true
 			};
 			return this.flexToJsCall(array) as Rectangle2D;
+		}
+		/**
+		 * 清除三维图层选择集中的内容，并且同时清除被选中元素的高亮效果。 
+		 */
+		public function releaseSelection():void
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"releaseSelection",
+					isReturn:true
+			};
+			this.flexToJsCall(array);
+		}
+		/**
+		 * 获取矢量图层选择集中最后一个元素的属性字段信息集合。
+		 */
+		public function get_fieldInfos():FieldInfos
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_fieldInfos",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as FieldInfos;
+		}
+		/**
+		 * 根据字段id获取选择集 Selection3D 中第一个对象的字段值。
+		 */
+		public function getFieldValue(value:Number):Object
+		{
+			var realArgument:Array=[value.toString()+"$Number"];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"getFieldValue",
+					isReturn:true,
+					realArgument:realArgument
+			};
+			return this.flexToJsCall(array) as Object;
 		}
 	}
 }

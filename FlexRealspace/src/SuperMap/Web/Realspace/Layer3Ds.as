@@ -36,7 +36,7 @@ package SuperMap.Web.Realspace
 		 * addToHead：是否将图层添加到集合的顶部，默认值为 true，即添加最上层。
 		 * 返回三维图层。
 		 */
-		public function add(strServerRootUrl:String,strLayerName:String,strDataName:String,layer3DType:Number,addToHead:Boolean):Layer3D
+		public function add(strServerRootUrl:String,strLayerName:String,strDataName:String,layer3DType:Number,addToHead:Boolean=true):Layer3D
 		{
 			var realArgument:Array=[
 				strServerRootUrl+"$String",
