@@ -41,5 +41,23 @@ package SuperMap.Web.Core
 			}
 			super(key,isNew,array);
 		}
+		/**
+		 * 获取三维几何线对象中指定索引号的子对象的三维点对象数组。 
+		 */
+		public function getPart(nIndex:Number):Point3Ds
+		{
+			var realArgument:Array=[
+				nIndex.toString()+"$Number"
+			];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"getPart",
+					isReturn:true,
+					realArgument:realArgument
+			};
+			return this.flexToJsCall(array) as Point3Ds;
+		}
 	}
 }

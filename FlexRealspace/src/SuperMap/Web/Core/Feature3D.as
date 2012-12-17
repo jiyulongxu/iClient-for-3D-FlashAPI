@@ -1,16 +1,32 @@
 package SuperMap.Web.Core
 {
 	import SuperMap.Web.Util.ClassBase;
-	
+	/**
+	 * 
+	 */
 	public class Feature3D extends ClassBase
 	{
 		public var CLASSNAME:String="Feature3D";
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.Core.Feature3D";
 		public function Feature3D(object:Object=null)
 		{
-			var key:Number=object["key"] as Number;
-			var isNew:Boolean=object["isNew"] as Boolean;
-			super(key,isNew,null);
+			var key:Number;
+			var isNew:Boolean;
+			var array:Object;
+			if(object==null)
+			{
+				key=0;
+				isNew=true;
+				array={
+					className:this.REALSPACE_CLASSNAME
+				};
+			}
+			else
+			{
+				key=object["key"] as Number;
+				isNew=object["isNew"] as Boolean;
+			}
+			super(key,isNew,array);
 		}
 		/**
 		 * 获取三维要素对象的名称。
@@ -71,6 +87,36 @@ package SuperMap.Web.Core
 				isNew:true,
 				key:this.KEY,
 					functionName:"set_style3D",
+					isReturn:true,
+					realArgument:realArgument
+			};
+			this.flexToJsCall(array);
+		}
+		/**
+		 * 获取三维地理要素的几何类型，不仅可以为三维的点、线、面、文本等，也可以是二维的几何对象。
+		 */
+		public function get_geometry():Geometry
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_geometry",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as Geometry;
+		}
+		/**
+		 * 设置三维地理要素的几何类型，不仅可以为三维的点、线、面、文本等，也可以是二维的几何对象。
+		 */
+		public function set_geometry(value:Geometry):void
+		{
+			var realArgument:Array=[value.KEY.toString()+"$Object"];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"set_geometry",
 					isReturn:true,
 					realArgument:realArgument
 			};

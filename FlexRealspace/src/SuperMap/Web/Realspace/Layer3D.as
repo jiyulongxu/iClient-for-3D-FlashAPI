@@ -1,6 +1,7 @@
 package SuperMap.Web.Realspace
 {
 	import SuperMap.Web.Core.Feature3D;
+	import SuperMap.Web.Core.Feature3Ds;
 	import SuperMap.Web.Core.Rectangle2D;
 	import SuperMap.Web.Util.ClassBase;
 	
@@ -127,6 +128,20 @@ package SuperMap.Web.Realspace
 					realArgument:realArgument
 			};
 			return this.flexToJsCall(array) as Object;
+		}
+		/**
+		 * 获取要素集合
+		 */
+		public function get_feature3Ds():Feature3Ds
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_feature3Ds",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as Feature3Ds;
 		}
 	}
 }

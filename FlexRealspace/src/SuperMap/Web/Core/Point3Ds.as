@@ -15,23 +15,18 @@ package SuperMap.Web.Core
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.Core.Point3Ds";
 		/**
 		 * 构造函数
-		 * point3Ds：三维地理坐标点对数组。
 		 */
 		public function Point3Ds(object:Object=null)
 		{
 			var key:Number;
 			var isNew:Boolean;
 			var array:Object;
-			if(object!=null)
+			if(object==null)
 			{
 				key=0;
 				isNew=true;
-				var realArgument:Array=[
-					object.KEY.toString()+"$Object"
-				];
 				array={
-					className:this.REALSPACE_CLASSNAME,
-						realArgument:realArgument
+					className:this.REALSPACE_CLASSNAME
 				};
 			}
 			else
@@ -40,6 +35,38 @@ package SuperMap.Web.Core
 				isNew=object["isNew"] as Boolean;
 			}
 			super(key,isNew,array);
+		}
+		/**
+		 * 获取集合中指定索引的三维点对象。例如获取集合中所引值为1的三维点对象，即 Point3Ds.get_item(1)。  
+		 */
+		public function get_item(nIndex:Number):Point3D
+		{
+			var realArgument:Array=[
+				nIndex.toString()+"$Number"
+			];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_item",
+					isReturn:true,
+					realArgument:realArgument
+			};
+			return this.flexToJsCall(array) as Point3D;
+		}
+		/**
+		 * 获取三维点对象集合中 Point3D 对象的个数。
+		 */
+		public function get_count():Number
+		{
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"get_count",
+					isReturn:true
+			};
+			return this.flexToJsCall(array) as Number;
 		}
 	}
 }

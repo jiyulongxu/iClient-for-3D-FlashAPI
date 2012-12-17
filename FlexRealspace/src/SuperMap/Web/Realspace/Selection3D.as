@@ -29,10 +29,8 @@ package SuperMap.Web.Realspace
 				isNew:true,
 				key:this.KEY,
 					functionName:"get_count",
-					isReturn:"true",
-					returnType:"Number"
+					isReturn:true
 			};
-			//Number(this.flexToJsCall(array));
 			return this.flexToJsCall(array) as Number;
 		}
 		/**

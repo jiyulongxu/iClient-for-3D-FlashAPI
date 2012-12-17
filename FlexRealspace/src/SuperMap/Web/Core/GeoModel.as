@@ -33,5 +33,23 @@ package SuperMap.Web.Core
 			}
 			super(key,isNew,array);
 		}
+		/**
+		 * 通过指定模型文件（3DS 或 SGM 类型）的 zip 包所在的服务器全路径来获取三维模型几何对象并渲染。
+		 * Zip 包里只能有一个 sgm 或者 3ds 文件以及其匹配的纹理文件。
+		 * 下载的文件放在 C:SuperMapSuperMap iClient 6RSuperMap iClient 6R for RealspaceBin esourcedownloads[filename] 文件夹下。
+		 */
+		public function fromModelFile(strPathURL:String):Boolean
+		{
+			var realArgument:Array=[strPathURL+"$String"];
+			var array:Object={
+				action:"FUNCTION",
+				isNew:true,
+				key:this.KEY,
+					functionName:"fromModelFile",
+					isReturn:true,
+					realArgument:realArgument
+			};
+			return this.flexToJsCall(array) as Boolean;
+		}
 	}
 }

@@ -20,6 +20,8 @@
 			
 			private var m_sceneControl:SceneControl;
 			private var m_scene:SuperMap.Web.Realspace.Scene;
+			private var panAction:Pan;
+			//private var panAction = null;
 			private var m_sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
 			//程序初始化所有控件之后
 			protected function application1_creationCompleteHandler(event:FlexEvent):void
@@ -54,7 +56,9 @@
 			protected function button2_clickHandler(event:MouseEvent):void
 			{
 				//设置控件的当前操作为漫游
-				var panAction:Pan=new Pan(m_sceneControl);
+				if(panAction==null){
+					panAction=new Pan(m_sceneControl);
+				}
 				m_sceneControl.set_sceneAction(panAction);
 			}
 			protected function button3_clickHandler(event:MouseEvent):void
