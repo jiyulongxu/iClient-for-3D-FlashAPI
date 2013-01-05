@@ -2,7 +2,8 @@ package SuperMap.Web.Core
 {
 	import SuperMap.Web.Util.ClassBase;
 	/**
-	 * 
+	 * 三维地理要素类
+	 * 三维地理要素类，用来定义一个地理要素描述空间实体对象。它包括地理要素的几何类型(点、线、面、文本等)、属性、地理要素风格等信息。
 	 */
 	public class Feature3D extends ClassBase
 	{

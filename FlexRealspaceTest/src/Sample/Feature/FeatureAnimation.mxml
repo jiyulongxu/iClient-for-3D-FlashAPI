@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:Util="SuperMap.Web.Util.*"
+			   minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import SuperMap.Web.Core.Feature3D;
+			import SuperMap.Web.Core.GeoLine3D;
+			import SuperMap.Web.Core.GeoModel;
+			import SuperMap.Web.Core.GeoPlacemark;
+			import SuperMap.Web.Core.Geometry;
+			import SuperMap.Web.Core.Point3D;
+			import SuperMap.Web.Core.Style3D;
+			import SuperMap.Web.Realspace.Camera;
+			import SuperMap.Web.Realspace.FlyingOperator;
+			import SuperMap.Web.Realspace.Layer3D;
+			import SuperMap.Web.Realspace.Layer3DServiceInfo;
+			import SuperMap.Web.Realspace.Layer3DServicesList;
+			import SuperMap.Web.Realspace.TrackingLayer3D;
+			import SuperMap.Web.UI.Controls.SceneControl;
+			import SuperMap.Web.Util.CallBackEvent;
+			
+			import flash.events.TimerEvent;
+			
+			import mx.events.FlexEvent;
+			
+			import org.osmf.events.TimeEvent;
+			
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
+			private var m_trackingLayer:TrackingLayer3D;
+			private var m_camera:SuperMap.Web.Realspace.Camera;
+			private var m_layer3DServicesList:Layer3DServicesList;
+			private var m_route:GeoLine3D;
+			private var m_startPosition:Point3D;
+			private var m_position:Point3D;
+			private var m_endPosition:Point3D;
+			private var m_jeepModel:GeoModel;
+			private var m_step:Number=0.000001;
+			private var m_timer:Timer;
+			private var m_sceneUrl:String="http://localhost:8090/iserver/services/components-rest/rest/realspace";
+			
+			//程序初始化所有控件之后
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//初始化三维场景控件实例
+				m_sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+			}
+			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
+			private function succeedCallBack(event:CallBackEvent):void
+			{
+				//获取Realspace控件的场景，控件和场景是一对一的捆绑关系
+				m_scene=m_sceneControl.get_scene();
+				//获取跟踪图层
+				m_trackingLayer=m_scene.get_trackingLayer3D();
+				//获取当前的相机
+				m_camera = m_scene.get_camera();
+				
+				//获取三维图层信息列表对象实例
+				m_layer3DServicesList = m_sceneControl.get_layer3DServicesList();
+				
+				//从指定的服务器获取场景的图层服务信息，获取成功返回 True
+				var bLoad:Boolean = m_layer3DServicesList.load(m_sceneUrl, "scene");
+				if(bLoad)
+				{
+					//添加场景
+					addScene();
+					
+					//添加动画路径	
+					addRoute();
+					
+					//添加汽车模型
+					addModel();
+					
+					//
+					m_timer=new Timer(10);
+					m_timer.addEventListener(TimerEvent.TIMER,changePosition);
+				}
+				
+			}
+			//控件初始化失败后的回调函数
+			private function failedCallBack(event:CallBackEvent):void
+			{
+				trace("Realspace initialized failed!");
+			}
+			//添加场景
+			private function addScene():void
+			{
+				//获取三维图层服务信息
+				var layer3DServiceInfo1:Layer3DServiceInfo = m_layer3DServicesList.get_item("Building@OlympicGreen");
+				//获取图层对应的数据名称。
+				var dataName1:String = layer3DServiceInfo1.get_dataName();
+				//新建背景图层
+				var nestLayer1:Layer3D = m_scene.get_layer3Ds().add(m_sceneUrl,"Building@OlympicGreen", dataName1, SuperMap.Web.Realspace.Layer3DType.VECTOR);
+				
+				//获取三维图层服务信息
+				var layer3DServiceInfo2:Layer3DServiceInfo = m_layer3DServicesList.get_item("Ground@OlympicGreen");
+				//获取图层对应的数据名称。
+				var dataName2:String = layer3DServiceInfo2.get_dataName();
+				//新建背景图层
+				var nestLayer2:Layer3D= m_scene.get_layer3Ds().add(m_sceneUrl,"Ground@OlympicGreen", dataName2, SuperMap.Web.Realspace.Layer3DType.VECTOR);
+			}
+			//添加动画路径
+			private function addRoute():void
+			{
+				//获取三维图层服务信息
+				var layer3DServiceInfo:Layer3DServiceInfo = m_layer3DServicesList.get_item("BirdNestRoad");
+				//获取图层对应的数据名称。
+				var dataName:String = layer3DServiceInfo.get_dataName();
+				//新建KML图层
+				var kmlLayer:Layer3D = m_scene.get_layer3Ds().add(m_sceneUrl,"BirdNestRoad", dataName, SuperMap.Web.Realspace.Layer3DType.KML);
+				//获取三维几何地标对象
+				var routeGeometry:Geometry= kmlLayer.get_feature3Ds().findFeature3D("鸟巢道路",SuperMap.Web.Core.Feature3DSearchOption.AllFeatures).get_geometry();
+				var routePlaceMark:GeoPlacemark=routeGeometry as GeoPlacemark;
+				//获取路线
+				m_route = routePlaceMark.get_feature3D().get_geometry() as GeoLine3D;
+				//获取开始点
+				m_startPosition =  m_route.getPart(0).get_item(0);
+				//记录当前的点位置
+				m_position=m_startPosition;
+				//获取路线内的点数量
+				var count:Number = m_route.getPart(0).get_count();
+				//获取终点
+				m_endPosition = m_route.getPart(0).get_item(count - 1);
+				
+			}
+			
+			//往跟踪层添加模型，包括汽车模型
+			private function addModel():void
+			{
+				//初始化吉普车三维对象
+				m_jeepModel = new SuperMap.Web.Core.GeoModel();
+				var modelurl:String = "http://localhost:8090/RealspaceSample/jeep.zip";
+				//通过指定模型文件（3DS 或 SGM 类型）的 zip 包所在的服务器全路径来获取三维模型几何对象并渲染。
+				m_jeepModel.fromModelFile(modelurl);
+				//设置吉普车的位置。该位置的坐标值是吉普车外接长方体底面中心点的三维坐标值。 这个底面中心点用来控制吉普车在地球上放置位置。目前只对模型、图片有效。
+				m_jeepModel.set_position(new SuperMap.Web.Core.Point3D(m_position.get_x(), m_position.get_y(), 6.50));
+				//创建三维要素风格类 该类主要用于设置三维要素对象的显示风格。
+				var style:Style3D = new SuperMap.Web.Core.Style3D();
+				//设置高度模式
+				style.set_altitudeMode(SuperMap.Web.Realspace.AltitudeMode.RELATIVE_TO_GROUND);
+				//设置二维对象的底部高程值，单位为米。
+				style.set_bottomAltitude(3.5);
+				//初始化一个三维地理要素对象
+				var feature:Feature3D = new SuperMap.Web.Core.Feature3D();
+				//设置对象为吉普车
+				feature.set_geometry(m_jeepModel);
+				//设置三维风格
+				feature.set_style3D(style);
+				//将此三维要素添加到跟踪图层
+				m_trackingLayer.add(feature,"jeep");
+				//定位
+				m_camera.set_longitude(m_position.get_x());
+				m_camera.set_latitude(m_position.get_y()+0.0002);
+				m_camera.set_altitude(40);
+				m_camera.set_tilt(75);
+				m_scene.get_flyingOperator().flyTo(m_camera); 
+				
+			}
+			//改变小车的位置
+			private function changePosition(evt:TimerEvent):void
+			{
+				//改变坐标
+				if (m_position.get_y() < m_endPosition.get_y()) 
+				{
+					m_position.set_x(m_position.get_x()-m_step/20);
+					m_position.set_y(m_position.get_y()+m_step);
+				}
+				else
+				{
+					m_position= m_startPosition;
+				}
+				m_jeepModel.set_position(m_position);
+				//定位
+				m_camera.set_longitude(m_position.get_x());
+				m_camera.set_latitude(m_position.get_y()+0.0002);
+				m_scene.set_camera(m_camera); 
+				
+			}
+			//启动
+			private function animation():void
+			{
+				m_timer.start();
+			}
+			//停止
+			private function stop():void
+			{
+				m_timer.stop();
+			}
+			//加速
+			private function accelerate():void
+			{
+				m_step*=2;
+			}
+			//减速
+			private function decelerate():void
+			{
+				m_step/=2;
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<Util:SceneDiv id="mySceneControl" x="10" y="49" width="935" height="541">
+	</Util:SceneDiv>
+	<s:Button id="buttonStart" x="10" y="20" label="启动" click="animation()"/>
+	<s:Button id="buttonStop" x="88" y="20" label="停止" click="stop()"/>
+	<s:Button id="buttonAccelerate" x="166" y="20" label="加速" click="accelerate()"/>
+	<s:Button id="buttonDecelerate" x="244" y="20" label="减速" click="decelerate()"/>
+</s:Application>

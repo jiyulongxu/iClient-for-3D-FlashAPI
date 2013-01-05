@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="FlexRealspaceSample.mxml" projectUUID="b32dddd0-b143-43ff-985a-0bab660bf530" version="10">
-  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Flex 4.6.0" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -16,9 +16,10 @@
   <applications>
     <application path="Sample/Query/FieldQuery.mxml"/>
     <application path="Sample/Query/QueryService.mxml"/>
+    <application path="Sample/Feature/FeatureAnimation.mxml"/>
     <application path="Sample/SceneView/HelloWorld.mxml"/>
-    <application path="Sample/SceneView/BasicAction.mxml"/>
     <application path="Sample/SceneView/TerrainExaggeration.mxml"/>
+    <application path="Sample/SceneView/BasicAction.mxml"/>
     <application path="Sample/Query/Measure.mxml"/>
     <application path="Sample/SceneView/Fly_Routes.mxml"/>
     <application path="Sample/SceneView/LoadLayers.mxml"/>
