@@ -52,7 +52,11 @@ SuperMap iClient 6R (2012) for FlexRealspace是一套基于 SuperMap UGC （Universal 
 
 ### 六、效果展示
 
+下图为北京鸟巢区域的三维场景：
+
 ![original_KGvP_46e70001b92f125c](http://fmn.xnpic.com/fmn056/20130108/1055/original_KGvP_46e70001b92f125c.jpg)
+
+下图为飞行效果图：
 
 ![original_b9IM_77dc00011bde125b](http://fmn.rrimg.com/fmn063/20130108/1055/original_b9IM_77dc00011bde125b.jpg)
 
