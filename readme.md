@@ -2,7 +2,7 @@
 
 SuperMap iClient 6R (2012) for FlexRealspace是一套基于 SuperMap UGC （Universal GIS Core）底层类库和 OpenGL 三维图形处理库的三维地理信息可视化客户端开发包。致力于帮助用户使用flex快速打造三维可视化地理信息客户端。可以大大降低用户开发的难度和时间成本。
 
-![original_CbDk_163500019a01118f](http://fmn.rrfmn.com/fmn059/20130107/0950/original_CbDk_163500019a01118f.jpg)
+![original_THmC_4b6f000174941190](http://fmn.rrimg.com/fmn062/20130108/1055/original_THmC_4b6f000174941190.jpg)
 
 ### 二、产品定位
 
@@ -52,6 +52,9 @@ SuperMap iClient 6R (2012) for FlexRealspace是一套基于 SuperMap UGC （Universal 
 
 ### 六、效果展示
 
+![original_KGvP_46e70001b92f125c](http://fmn.xnpic.com/fmn056/20130108/1055/original_KGvP_46e70001b92f125c.jpg)
+
+![original_b9IM_77dc00011bde125b](http://fmn.rrimg.com/fmn063/20130108/1055/original_b9IM_77dc00011bde125b.jpg)
 
 ### 七、技术支持与服务
 
