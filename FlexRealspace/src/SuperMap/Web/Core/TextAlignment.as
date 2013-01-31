@@ -3,6 +3,7 @@ package SuperMap.Web.Core
 	import SuperMap.Web.Util.Enum;
 	/**
 	 * 文本对齐方式常量
+	 * （模拟枚举，不可以初始化，对外开放）
 	 * 文本对齐常量指定文本中各子对象的对齐方式。文本对象的每个子对象的位置是由文本的锚点和文本的对齐方式共同确定的。
 	 * 当文本子对象的锚点固定，对齐方式确定文本子对象与锚点的相对位置，从而确定文本子对象的位置。
 	 */
@@ -56,6 +57,12 @@ package SuperMap.Web.Core
 		 * 右上角对齐。当文本的对齐方式为右上角对齐时，文本子对象的最小外接矩形的右上角点在该文本子对象的锚点位置。
 		 */
 		public static const TopRight:Number=2;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function TextAlignment()
 		{
 			super();

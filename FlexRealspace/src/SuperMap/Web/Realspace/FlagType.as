@@ -3,6 +3,7 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.Enum;
 	/**
 	 * 按键枚举类。
+	 * （模拟枚举，不可以初始化，对外开放）
 	 * 当用户通过鼠标或键盘完成交互操作时，通过获取按键类型从而触发不同事件。
 	 */
 	public class FlagType extends Enum
@@ -51,6 +52,12 @@ package SuperMap.Web.Realspace
 		 * 鼠标滚轮
 		 */
 		public static const WHEEL:Number=64;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function FlagType()
 		{
 			super();

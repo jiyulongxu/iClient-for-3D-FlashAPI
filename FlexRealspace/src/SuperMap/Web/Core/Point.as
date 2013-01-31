@@ -3,6 +3,7 @@ package SuperMap.Web.Core
 	import SuperMap.Web.Util.ClassBase;
 	/**
 	 * 像素坐标系下的点对象类
+	 * （可以初始化，对外开放）
 	 */
 	public class Point extends ClassBase
 	{
@@ -10,13 +11,29 @@ package SuperMap.Web.Core
 		 * 用于确认对象的类型
 		 */
 		public var CLASSNAME:String="Point";
-		//存储此类的全称，需要和js端名称一样
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.Core.Point";
 		
 		/**
-		 * 构造函数
-		 * x：像素坐标系下 x 坐标值
-		 * y：像素坐标系下 y 坐标值
+		 * Point 构造函数，利用给定的 x、y 坐标构造屏幕点对象
+		 * @param x 像素坐标系下 x 坐标值
+		 * @param y 像素坐标系下 y 坐标值
+		 * 
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * //初始化三个point对象
+		 * var point1:SuperMap.Web.Core.Point=new SuperMap.Web.Core.Point(50,200);
+		 * var point2:SuperMap.Web.Core.Point=new SuperMap.Web.Core.Point(100,200);
+		 * var point3:SuperMap.Web.Core.Point=new SuperMap.Web.Core.Point(50,200);
+		 * //判断point1对象是否为空，返回false，非空
+		 * var isEmpty:Boolean=point1.isEmpty();
+		 * //判断point1和point2是否相等，返回false
+		 * var isEquals1:Boolean=point1.equals(point2);
+		 * //判断point1和point3是否相等，返回true
+		 * var isEquals2:Boolean=point1.equals(point3);
+		 * </listing>
 		 */
 		public function Point(x:Object=0,y:Number=0)
 		{
@@ -45,7 +62,7 @@ package SuperMap.Web.Core
 		}
 		/**
 		 * 将传入的点对象拷贝为自身点对象
-		 * point：被拷贝的像素坐标系下的点对象
+		 * @param point 被拷贝的像素坐标系下的点对象
 		 */
 		public function copy(point:Point):void
 		{
@@ -64,8 +81,8 @@ package SuperMap.Web.Core
 		}
 		/**
 		 * 判断指定的点对象（Object 类）是否与当前 Point 对象具有相同坐标值
-		 * object：将与此 Point 对象进行比较的点对象，可能不一定是Point的对象
-		 * 如果两个点对象具有相同坐标值，返回 True；否则返回 False。当参数 point 为空时，也返回 False
+		 * @param object 将与此 Point 对象进行比较的点对象，可能不一定是Point的对象
+		 * @return 如果两个点对象具有相同坐标值，返回 True；否则返回 False。当参数 point 为空时，也返回 False。
 		 */
 		public function equals(object:Object):Boolean
 		{
@@ -91,7 +108,7 @@ package SuperMap.Web.Core
 		}
 		/**
 		 * 判断点对象中 x、y 参数是否为空
-		 * 如果点对象中任意参数为空则返回 True，否则返回 False
+		 * @return 如果点对象中任意参数为空则返回 True，否则返回 False
 		 */
 		public function isEmpty():Boolean
 		{

@@ -9,20 +9,32 @@ package SuperMap.Web.Realspace
 
 	/**
 	 * 三维场景类
+	 * （不可以初始化，对外开放）
 	 * 该类主要用于装载影像、模型、地形图层、屏幕图层、跟踪图层、飞行对象等。当加载三维场景时存在一个默认的三维场景。
 	 * 有关 Scene 的详细信息请参见专题文档 三维场景控件和三维场景。
 	 * 该类不可创建，只能通过 SceneControl.get_scene() 获取。
 	 */
 	public class Scene extends ClassBase
 	{
-		public var CLASSNAME:String="Scene";
-		
-		
 		/**
-		 * 在js端对应的类的全名
+		 * 用于确认对象的类型
+		 */
+		public var CLASSNAME:String="Scene";
+		/**
+		 * 对应js API的类全名
 		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.Realspace.Scene";
-		
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * //获取Realspace控件的场景，控件和场景是一对一的捆绑关系
+		 * scene=m_sceneControl.get_scene();
+		 * //新建一个照相机对象，把照相机的位置设置为中国的中心点
+		 * var camera:SuperMap.Web.Realspace.Camera=new SuperMap.Web.Realspace.Camera(104.348,28.708,10288740.0);
+		 * //将场景的视点移动到中国区域
+		 * scene.get_flyingOperator().flyTo(camera,5000);
+		 * </listing>
+		 */
 		public function Scene(object:Object=null)
 		{
 			//此类不允许主动创建，所以不需要向js端发送消息
@@ -47,7 +59,8 @@ package SuperMap.Web.Realspace
 		/**
 		 * 查找当前三维场景中图层的选择集。该方法返回的是 Selection3D 类对象的数组，
 		 * 每一个 Selection3D 类对象对应三维场景中一个图层中所有处于选中状态的对象集合，若没有对象处于选中状态，则数组为空。
-		 * hasObjectSelected：指定返回的选择集是所有图层的选择集，还是选择集对象不为空的图层选择集。当其为 true 时，返回选择集对象不为空的图层选择集，否则返回所有图层的选择集。
+		 * @param hasObjectSelected 指定返回的选择集是所有图层的选择集，还是选择集对象不为空的图层选择集。当其为 true 时，返回选择集对象不为空的图层选择集，否则返回所有图层的选择集。
+		 * @return 返回 Selection3D 类对象的数组
 		 */
 		public function findSelection3Ds(hasObjectSelected:Boolean=false):Array
 		{
@@ -64,9 +77,9 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取指定位置的地形高度，如果指定位置未加载地形数据，则高度为0，单位：米。
-		 * longitude：指定位置的经度
-		 * latitude：指定位置的纬度
-		 * 返回地形高度
+		 * @param longitude 指定位置的经度
+		 * @param latitude 指定位置的纬度
+		 * @return 返回地形高度
 		 */
 		public function getAltitude(longitude:Number,latitude:Number):Number
 		{
@@ -83,6 +96,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取渲染当前场景的平均帧数
+		 * @return 返回实时渲染当前场景的平均帧数
 		 */
 		public function getAverageFPS():Number
 		{
@@ -98,6 +112,7 @@ package SuperMap.Web.Realspace
 		/**
 		 * 获取场景数据下载进度值
 		 * 场景数据下载进度值取值范围0-1。场景数据下载进度以图层为单位，取值为各个图层下载进度值的平均值
+		 * @return 返回场景数据下载进度值
 		 */
 		public function getDataStreamingProgress():Number
 		{
@@ -112,7 +127,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取视图投影矩阵状态，即地球是否在转动。
-		 * true 表示地球处于转动状态，false 表示地球处于静止状态。
+		 * @return true 表示地球处于转动状态，false 表示地球处于静止状态。
 		 */
 		public function getViewWorldState():Boolean
 		{
@@ -128,9 +143,9 @@ package SuperMap.Web.Realspace
 		/**
 		 * 打开指定场景及场景中的所有图层。
 		 * 加载指定场景时，同时加载场景的环境变量包括环境光，背景色，地形夸张系数，相机，雾效，星空，大气层，经纬网等以及场景中的图层数据。 
-		 * sceneAddressUrl：场景所在的服务器 URL 地址。
-		 * sceneName：场景名称。
-		 * 返回是否成功加载场景，true 表示成功加载，否则返回 false。
+		 * @param sceneAddressUrl 场景所在的服务器 URL 地址。
+		 * @param sceneName 场景名称。
+		 * @return 返回是否成功加载场景，true 表示成功加载，否则返回 false。
 		 */
 		public function open(sceneAddressUrl:String,sceneName:String):Boolean
 		{
@@ -175,7 +190,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置实时栅格化是否刷新。在三维系统中如果出现栅格数据显示问题，可以调用该函数仅刷新栅格数据的显示。
-		 * bRefreshRaster：是否实时对栅格数据刷新。true，表示实时对栅格数据进行刷新。
+		 * @param bRefreshRaster 是否实时对栅格数据刷新。true，表示实时对栅格数据进行刷新。
 		 */
 		public function setRefreshRaster(bRefreshRaster:Boolean):void
 		{
@@ -192,7 +207,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 更新场景的缓存。通过该方法可以将场景的缓存删除，当重新浏览场景时会自动重新下载缓存，达到更新缓存的效果。
-		 * 返回删除缓存的大小，单位KB。
+		 * @return 返回删除缓存的大小，单位KB。
 		 */
 		public function updateCacheFile():Number
 		{
@@ -223,6 +238,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景下绑定对象的偏移量。 
+		 * @return 返回当前场景下绑定对象的偏移量
 		 */
 		public function get_autoLockOffset():Point3D
 		{
@@ -237,6 +253,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置当前场景下绑定对象的偏移量。
+		 * @param value 需要设置的当前场景下绑定对象的偏移量
 		 */
 		public function set_autoLockOffset(value:Point3D):void
 		{
@@ -254,6 +271,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景的绑定对象。 
+		 * @return 返回当前场景的绑定对象
 		 */
 		public function get_autoLockTarget():GeoModel
 		{
@@ -268,6 +286,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置当前场景的绑定对象。
+		 * @param value 需要设置的当前场景的绑定对象
 		 */
 		public function set_autoLockTarget(value:GeoModel):void
 		{
@@ -284,6 +303,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取小场景的范围。 
+		 * @return 返回小场景的范围
 		 */
 		public function get_bounds(): Rectangle2D
 		{
@@ -298,6 +318,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置小场景的范围。
+		 * @param value 需要设置的小场景的范围
 		 */
 		public function set_bounds(value:Rectangle2D):void
 		{
@@ -316,6 +337,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景的相机对象，相机相当于视点。 
+		 * @return 返回当前场景的相机对象
 		 */
 		public function get_camera(): Camera
 		{
@@ -330,6 +352,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置当前场景的相机对象，相机相当于视点。
+		 * @param value 需要设置的当前场景的相机对象
 		 */
 		public function set_camera(value:Camera):void
 		{
@@ -348,6 +371,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景的比例尺。 
+		 * @return 返回当前场景的比例尺
 		 */
 		public function get_currentScale(): Number
 		{
@@ -363,6 +387,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景的第一人称相机。
+		 * @return 返回当前场景的第一人称相机
 		 */
 		public function get_firstPersonCamera(): Camera
 		{
@@ -377,6 +402,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置当前场景的第一人称相机。
+		 * @param value 需要设置的当前场景的第一人称相机
 		 */
 		public function set_firstPersonCamera(value:Camera):void
 		{
@@ -395,6 +421,7 @@ package SuperMap.Web.Realspace
 		/**
 		 * 获取当前场景的飞行操作对象。
 		 * 该属性主要用于设置场景的飞行状态，指定飞向下一个场景的方位、控制飞行方式以及飞行动画。
+		 * @return 返回当前场景的飞行操作对象
 		 */
 		public function get_flyingOperator():FlyingOperator
 		{
@@ -410,6 +437,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景飞行管理对象。 
+		 * @return 返回当前场景飞行管理对象
 		 */
 		public function get_flyManager():FlyManager
 		{
@@ -425,6 +453,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景相机张角，单位：度。
+		 * @return 返回当前场景相机张角
 		 */
 		public function get_fov(): Number
 		{
@@ -439,6 +468,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置当前场景相机张角，单位：度。
+		 * @param value 需要设置的当前场景相机张角
 		 */
 		public function set_fov(value:Number):void
 		{
@@ -456,6 +486,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景的全球底图类对象。
+		 * @return 返回当前场景的全球底图类对象
 		 */
 		public function get_globalImage():GlobalImage
 		{
@@ -471,6 +502,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景是否为第一人称视角。
+		 * @return 返回当前场景是否为第一人称视角
 		 */
 		public function get_isFirstPersonView(): Boolean
 		{
@@ -485,6 +517,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置当前场景是否为第一人称视角。
+		 * @param value 设置当前场景是否为第一人称视角
 		 */
 		public function set_isFirstPersonView(value:Boolean):void
 		{
@@ -501,6 +534,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取三维图层集合对象。
+		 * @return 返回三维图层集合对象
 		 */
 		public function get_layer3Ds():Layer3Ds
 		{
@@ -516,6 +550,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取场景的名称。
+		 * @return 返回场景的名称
 		 */
 		public function get_name(): String
 		{
@@ -530,6 +565,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置场景的名称。
+		 * @param value 需要设置的场景的名称
 		 */
 		public function set_name(value:String):void
 		{
@@ -547,6 +583,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取场景中各种界面元素的可见性的集合，如经纬网、大气层等界面元素的可见性。
+		 * @return 返回场景中各种界面元素的可见性的集合
 		 */
 		public function get_sceneOption(): SceneOption
 		{
@@ -562,6 +599,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取场景中的屏幕图层。
+		 * @return 返回场景中的屏幕图层
 		 */
 		public function get_screenLayer3D(): ScreenLayer3D
 		{
@@ -577,6 +615,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景立体显示类对象。
+		 * @return 返回当前场景立体显示类对象
 		 */
 		public function get_stereo(): Stereo
 		{
@@ -592,6 +631,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景下的太阳对象。
+		 * @return 返回当前场景下的太阳对象
 		 */
 		public function get_sun(): Sun
 		{
@@ -605,10 +645,9 @@ package SuperMap.Web.Realspace
 			return this.flexToJsCall(array) as  Sun;
 		}
 		
-		
-		
 		/**
 		 * 获取地形夸大的比例。地形夸大是将地形的高按一定比例进行拉伸。
+		 * @return 返回地形夸大的比例
 		 */
 		public function get_terrainExaggeration(): Number
 		{
@@ -623,6 +662,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 设置地形夸大的比例。地形夸大是将地形的高按一定比例进行拉伸。
+		 * @param value 需要设置的地形夸大的比例
 		 */
 		public function set_terrainExaggeration(value:Number):void
 		{
@@ -641,6 +681,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取三维场景中的地形图层集合。
+		 * @return 返回三维场景中的地形图层集合
 		 */
 		public function get_terrainLayers(): TerrainLayers
 		{
@@ -654,9 +695,9 @@ package SuperMap.Web.Realspace
 			return this.flexToJsCall(array) as  TerrainLayers;
 		}
 		
-		
 		/**
 		 * 获取场景中的跟踪图层。
+		 * @return 返回场景中的跟踪图层
 		 */
 		public function get_trackingLayer3D(): TrackingLayer3D
 		{
@@ -670,10 +711,9 @@ package SuperMap.Web.Realspace
 			return this.flexToJsCall(array) as  TrackingLayer3D;
 		}
 		
-		
-		
 		/**
 		 * 获取当前场景模式。
+		 * @return 返回当前场景模式
 		 */
 		public function get_type(): Number
 		{
@@ -686,8 +726,10 @@ package SuperMap.Web.Realspace
 			};
 			return this.flexToJsCall(array) as  Number;
 		}
+		
 		/**
 		 * 设置当前场景模式。
+		 * @param value 需要设置的当前场景模式
 		 */
 		public function set_type(value:Number):void
 		{
@@ -703,9 +745,9 @@ package SuperMap.Web.Realspace
 			this.flexToJsCall(array);
 		}
 		
-		
 		/**
 		 * 获取当前场景的地下类对象。
+		 * @return 返回当前场景的地下类对象
 		 */
 		public function get_underground(): Underground
 		{
@@ -721,6 +763,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景窗口所对应的地理范围。
+		 * @return 返回当前场景窗口所对应的地理范围
 		 */
 		public function get_viewBounds(): Rectangle2D
 		{
@@ -736,6 +779,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景窗口的像素高度。
+		 * @return 返回当前场景窗口的像素高度
 		 */
 		public function get_viewWndHeight(): Number
 		{
@@ -751,6 +795,7 @@ package SuperMap.Web.Realspace
 		
 		/**
 		 * 获取当前场景窗口的像素宽度。
+		 * @return 返回当前场景窗口的像素宽度
 		 */
 		public function get_viewWndWidth(): Number
 		{

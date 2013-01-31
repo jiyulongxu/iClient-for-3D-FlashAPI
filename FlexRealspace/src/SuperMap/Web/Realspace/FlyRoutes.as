@@ -3,12 +3,21 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.ClassBase;
 	/**
 	 * 路线集合类。
+	 * （不可以初始化，对外开放）
 	 */
 	public class FlyRoutes extends ClassBase
 	{
+		/**
+		 * 用于确认对象的类型
+		 */
 		public var CLASSNAME:String="FlyRoutes";
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.Realspace.FlyRoutes";
-		
+		/**
+		 * 
+		 */
 		public function FlyRoutes(object:Object=null)
 		{
 			var key:Number=object["key"] as Number;
@@ -17,8 +26,8 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 从指定的文件中导入路线对象。
-		 * strPathURL：指定的文件全路径。
-		 * 返回文件是否成功导入，成功导入返回 True，否则返回 False。
+		 * @param strPathURL 指定的文件全路径。
+		 * @return 返回文件是否成功导入，成功导入返回 True，否则返回 False。
 		 */
 		public function fromFile(strPathURL:String):Boolean
 		{
@@ -35,6 +44,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取当前的飞行路线，没有飞行路线返回NULL 。
+		 * @return 返回当前的飞行路线
 		 */
 		public function get_currentRoute():FlyRoute
 		{

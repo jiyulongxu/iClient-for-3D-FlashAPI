@@ -3,12 +3,25 @@ package SuperMap.Web.UI.Action3Ds
 	import SuperMap.Web.UI.Controls.SceneControl;
 	/**
 	 * 用来描述通过鼠标在三维场景内进行距离量算操作的类。
+	 * （可以初始化，对外开放）
 	 * 这里量算的距离为球面距离，即不考虑地球表面地形起伏的光滑地球的球面距离。
 	 */
 	public class MeasureDistance extends SceneAction
 	{
+		/**
+		 * 用于确认对象的类型
+		 */
 		public var CLASSNAME:String="MeasureDistance";
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.UI.Action3Ds.MeasureDistance";
+		/**
+		 * 初始化 MeasureDistance 类的新实例
+		 * 
+		 * @param sceneControl 与 MeasureDistance 联动的三维场景控件（SuperMap.Web.UI.Controls.SceneControl类型）
+		 * 
+		 */
 		public function MeasureDistance(sceneControl:Object=null)
 		{
 			var key:Number;

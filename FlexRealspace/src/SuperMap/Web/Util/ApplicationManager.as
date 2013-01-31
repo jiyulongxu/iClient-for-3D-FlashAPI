@@ -12,16 +12,36 @@ package SuperMap.Web.Util
 	import flash.utils.getDefinitionByName;
 
 	/**
-	 * 核心管理类
+	 * 管理类
+	 * （不可初始化，不对外开放）
+	 * 所有js和as的交互最终都是通过此类来操作的
 	 */
 	public class ApplicationManager
 	{
+		
+		/**
+		 * 记录回调通道是否注册（只能存在一个）
+		 * 默认为false，注册一次都变成true
+		 */
+		private static var isRegisterApp:Boolean=false;
+		/**
+		 * 用于验证id是否存在的参数，如果存在就变大，反复验证，直到不重复为止
+		 */
+		private static var keyId:Number=0;
+		/**
+		 * 用于存储所有已经创建的对象的哈希表，默认大小为10
+		 */
+		public static var classHashTable:HashTable=new HashTable(10);
+		/**
+		 * 管理类构造函数
+		 */
 		public function ApplicationManager()
 		{
 		}
-		public static var classHashTable:HashTable=new HashTable(10);
 		/**
-		 * flex端向js端发送信息的方法
+		 * 向js端发送消息
+		 * @param object 记录信息的键值对
+		 * @return 返回的信息的键值对
 		 */
 		public static function flexToJs(object:Object):Object
 		{
@@ -30,10 +50,8 @@ package SuperMap.Web.Util
 			return ApplicationManager.parseArguments(result);
 		}
 		/**
-		 * 记录回调通道是否注册（只能存在一个）
-		 */
-		private static var isRegisterApp:Boolean=false;
-		/**
+		 * 初始化js 的API
+		 * 将打包为二进制的js API所有类重新转换为js形式的API
 		 * 整个程序在div初始化的时候才调用一次
 		 */
 		public static function initApp():void
@@ -62,7 +80,11 @@ package SuperMap.Web.Util
 			
 		}
 		/**
-		 * js回调的函数在此函数中进行处理
+		 * 监听js回调的函数
+		 * 此函数会将监听到的信息进行辨识，分发给对应的对象对应的操作
+		 * @param key 对象的key（通过key才能知道是哪一个对象发出的消息产生的回调）
+		 * @param event 回调事件类型（通过此参数才能知道某对象进行操作后回调函数该触发哪个事件）
+		 * @param array 回调信息的键值对
 		 */
 		public static function initBridgeJsToFlex(key:String,event:String,array:Object):void
 		{
@@ -74,8 +96,8 @@ package SuperMap.Web.Util
 			}
 		}
 		/**
-		 * 创建一个不存在的id
-		 * 
+		 * 创建一个不存在的key
+		 * @return 返回一个内存中不存在的唯一key
 		 */
 		public static function createKEY():Number
 		{
@@ -86,25 +108,24 @@ package SuperMap.Web.Util
 		}
 		
 		/**
-		 * 验证id是否存在，如果存在就变大，反复验证，知道不重复为止
-		 * 
-		 * 
+		 * 验证key是否存在
+		 * @param key 需要验证的key
+		 * @return 返回一个不存在的key
 		 */
-		public static var keyId:Number=0;
 		public static function verifyKEY(key:Number):Number
 		{
 			key+=keyId++;
 			if(classHashTable.find(key))
 			{
-				
 				verifyKEY(key+1);
 			}
 			return key;
 		}
 		
 		/**
-		 * 将创建了的对象保存在内存中
-		 * 
+		 * 将已创建的对象保存在内存中
+		 * 也就是哈希表中
+		 * @param object 任意对象
 		 */
 		public static function addObject(object:Object):void
 		{
@@ -113,6 +134,8 @@ package SuperMap.Web.Util
 		}
 		/**
 		 * 解析js端返回的结果
+		 * @param object 需要解析的js返回的键值对
+		 * @return 返回解析后的键值对
 		 */
 		public static function parseArguments(object:Object):Object
 		{

@@ -3,6 +3,7 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.Enum;
 	/**
 	 * 立体显示模式枚举。
+	 * （模拟枚举，不可以初始化，对外开放）
 	 */
 	public class StereoMode extends Enum
 	{
@@ -22,6 +23,12 @@ package SuperMap.Web.Realspace
 		 * 垂直跨越立体呈现方式。
 		 */
 		public static const VerticalSplit:Number=3;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function StereoMode()
 		{
 			super();

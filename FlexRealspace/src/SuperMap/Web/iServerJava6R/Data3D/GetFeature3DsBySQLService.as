@@ -2,18 +2,31 @@ package SuperMap.Web.iServerJava6R.Data3D
 {
 	import SuperMap.Web.Util.CallBackEvent;
 	import SuperMap.Web.iServerJava6R.ServiceBase;
-
+	/**
+	 * 查询成功事件
+	 */
 	[Event(name="processCompleted", type="SuperMap.Web.Util.CallBackEvent")]
+	/**
+	 * 查询失败事件
+	 */
 	[Event(name="processFailed", type="SuperMap.Web.Util.CallBackEvent")]
+	/**
+	 * SQL 查询服务类
+	 * （可以初始化，对外开放）
+	 */
 	public class GetFeature3DsBySQLService extends ServiceBase
 	{
 		/**
 		 * 用于确认对象的类型
 		 */
 		public var CLASSNAME:String="GetFeature3DsBySQLService";
-		//存储此类的全称，需要和js端名称一样
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsBySQLService";
-		
+		/**
+		 * @param url SQL 查询服务的url地址（String类型）
+		 */
 		public function GetFeature3DsBySQLService(url:Object=null)
 		{
 			var key:Number;
@@ -40,6 +53,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 发送查询请求。
+		 * @param parameter 查询参数
 		 */
 		public function processAsync(parameter:GetFeature3DsBySQLParameters):void
 		{
@@ -57,6 +71,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 获取查询结果。
+		 * @return 返回查询结果
 		 */
 		public function get_lastResult(): GetFeature3DsResult
 		{
@@ -71,6 +86,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 添加查询完成时执行的回调函数。
+		 * @param handler 回调函数
 		 */
 		public function add_processCompleted(handler:Function):void
 		{
@@ -88,6 +104,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 移除查询完成时执行的回调函数。
+		 * @param handler 回调函数
 		 */
 		public function remove_processCompleted(handler:Function):void
 		{
@@ -95,6 +112,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 添加查询失败时执行的回调函数。
+		 * @param handler 回调函数
 		 */
 		public function add_processFailed(handler:Function):void
 		{
@@ -112,6 +130,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 移除查询失败时执行的回调函数。
+		 * @param handler 回调函数
 		 */
 		public function remove_processFailed(handler:Function):void
 		{
@@ -121,8 +140,8 @@ package SuperMap.Web.iServerJava6R.Data3D
 		 * 重写基类的回调函数
 		 * 此方法主要作用在于按照传回来的参数分发给此对象里面应该来处理的外部方法，
 		 * 并且将需要的数据传给此方法
-		 * event：事件类型，用于回调后绑定外部处理函数
-		 * array：回调的数据，提供给外部函数使用
+		 * @param event 事件类型，用于回调后绑定外部处理函数
+		 * @param array 回调的数据，提供给外部函数使用
 		 */
 		override protected function callback(event:String,array:Object):void
 		{

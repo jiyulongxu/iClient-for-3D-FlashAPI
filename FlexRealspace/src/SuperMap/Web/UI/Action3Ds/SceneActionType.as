@@ -4,6 +4,7 @@ package SuperMap.Web.UI.Action3Ds
 
 	/**
 	 * 三维操作状态常量类。
+	 * （模拟枚举，不可以初始化，对外开放）
 	 * 该类包含了三维地图的操作状态常量。作为 SceneAction 的 type 属性，在扩展 SceneAction 时，
 	 * 扩展类中可以使用一个或组合多个 SceneActionType 中提供的操作，从而在一个类中完成一系列操作。
 	 */
@@ -53,6 +54,12 @@ package SuperMap.Web.UI.Action3Ds
 		 * 缩小操作
 		 */
 		public static const ZOOMOUT:Number=3;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function SceneActionType()
 		{
 			super();

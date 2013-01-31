@@ -2,29 +2,30 @@ package SuperMap.Web.Util
 {
 	/**
 	 * 有序链表类
-	 * 
+	 * （可初始化，不对外公开）
 	 */
 	public class SortedList
 	{
-		//裁判第一个列表项
+		/**
+		 * 裁判第一个列表项
+		 */
 		private var first:Link;
 		/**
-		 * 构造函数
+		 * 有序链表构造函数
 		 */
 		public function SortedList()
 		{
 			first=null;
 		}
 		/**
-		 * 插入一个链表节点
-		 * <p>link：Link 需要插入的链表节点<p>
+		 * 向此链表节点后面插入一个链表节点
+		 * @param link 需要插入的链表节点
 		 */
 		public function insert(link:Link):void
 		{
 			var key:Number=link.key;
 			var previous:Link=null;
 			var current:Link=first;
-			
 			while(current!=null && key!=current.key)
 			{
 				previous=current;
@@ -41,8 +42,8 @@ package SuperMap.Web.Util
 			link.next=current;
 		}
 		/**
-		 * 根据键值删除链表内部的数据
-		 * <p>key：Number
+		 * 根据键值删除链表节点，需要通过key判定是否为当前链表节点，如果不是，查找此链表节点后面的链表节点
+		 * @param key 链表节点对象的key
 		 */
 		public function deleteFromKey(key:Number):void
 		{
@@ -63,9 +64,9 @@ package SuperMap.Web.Util
 			}
 		}
 		/**
-		 * 根据key查找需要的链表节点
-		 * <p>key：Number 
-		 * <p>return：Link 
+		 * 根据key查找链表节点，如果不是当前链表节点，会继续查找此链表节点后面的链表节点
+		 * @param key 链表节点对象的key 
+		 * @return 查找到的链表节点（如果没有找到返回null）
 		 */
 		public function find(key:Number):Link
 		{

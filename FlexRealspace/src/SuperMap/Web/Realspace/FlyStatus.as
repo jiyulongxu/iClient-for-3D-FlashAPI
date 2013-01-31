@@ -3,6 +3,7 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.Enum;
 	/**
 	 * 飞行状态枚举类。
+	 * （模拟枚举，不可以初始化，对外开放）
 	 */
 	public class FlyStatus extends Enum
 	{
@@ -18,6 +19,12 @@ package SuperMap.Web.Realspace
 		 * 当前飞行状态为已经停止。
 		 */
 		public static const FSTOP:Number=0;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function FlyStatus()
 		{
 			super();

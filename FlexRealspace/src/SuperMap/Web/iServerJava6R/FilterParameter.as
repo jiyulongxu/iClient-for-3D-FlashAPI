@@ -3,6 +3,7 @@ package SuperMap.Web.iServerJava6R
 	import SuperMap.Web.Util.ClassBase;
 	/**
 	 * 查询过滤参数类。
+	 * （不可以初始化，对外开放）
 	 */
 	public class FilterParameter extends ClassBase
 	{
@@ -10,7 +11,9 @@ package SuperMap.Web.iServerJava6R
 		 * 用于确认对象的类型
 		 */
 		public var CLASSNAME:String="FilterParameter";
-		//存储此类的全称，需要和js端名称一样
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.iServerJava6R.FilterParameter";
 		
 		/**
@@ -37,7 +40,8 @@ package SuperMap.Web.iServerJava6R
 			super(key,isNew,array);
 		}
 		/**
-		 * 设置
+		 * 
+		 * @param value
 		 */
 		public function set_attributeFilter(value:String):void
 		{

@@ -2,11 +2,21 @@ package SuperMap.Web.Core
 {
 	/**
 	 * 三维地标几何对象类
+	 * （可以初始化，对外开放）
 	 */
 	public class GeoPlacemark extends Geometry3D
 	{
+		/**
+		 * 用于确认对象的类型
+		 */
 		public var CLASSNAME:String="GeoPlacemark";
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.Core.GeoPlacemark";
+		/**
+		 * 
+		 */
 		public function GeoPlacemark(object:Object=null)
 		{
 			var key:Number;
@@ -31,6 +41,7 @@ package SuperMap.Web.Core
 		 * 获取三维地标几何对象所对应的要素对象。
 		 * 该要素对象可以作为三维要素对象显示在三维场景窗口中，
 		 * 同时，该要素对象还用来确定三维地标几何对象名称所显示的位置。
+		 * @return 返回三维地标几何对象所对应的要素对象
 		 */
 		public function get_feature3D():Feature3D
 		{
@@ -47,6 +58,7 @@ package SuperMap.Web.Core
 		 * 设置三维地标几何对象所对应的要素对象。
 		 * 该要素对象可以作为三维要素对象显示在三维场景窗口中，
 		 * 同时，该要素对象还用来确定三维地标几何对象名称所显示的位置。
+		 * @param value 需要设置的三维地标几何对象所对应的要素对象
 		 */
 		public function set_feature3D(value:Feature3D):void
 		{
@@ -65,6 +77,7 @@ package SuperMap.Web.Core
 		}
 		/**
 		 * 获取三维地标几何对象的名称。
+		 * @return 返回三维地标几何对象的名称
 		 */
 		public function get_name():String
 		{
@@ -79,6 +92,7 @@ package SuperMap.Web.Core
 		}
 		/**
 		 * 设置三维地标几何对象的名称。
+		 * @param value 需要设置的三维地标几何对象的名称
 		 */
 		public function set_name(value:String):void
 		{

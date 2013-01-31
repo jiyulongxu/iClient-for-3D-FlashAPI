@@ -3,9 +3,15 @@ package SuperMap.Web.iServerJava6R.Data3D
 	import SuperMap.Web.Util.ClassBase;
 	/**
 	 * 要素查询参数基类。
+	 * （不可以初始化，对外开放）
 	 */
 	public class GetFeature3DsParametersBase extends ClassBase
 	{
+		/**
+		 * @param key 此对象的唯一标示
+		 * @param isNew 是否需要往js端发送消息
+		 * @param array 记录属性的键值对
+		 */
 		public function GetFeature3DsParametersBase(key:Number=0, isNew:Boolean=true, array:Object=null)
 		{
 			super(key, isNew, array);
@@ -28,7 +34,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 //		}
 		/**
 		 * 设置查询的数据集名称数组 （ datasourceName:datasetName ）。
-		 * value：数据集名称数组（字符串一维数组） 
+		 * @param value 数据集名称数组（字符串一维数组） 
 		 */
 		public function set_datasetNames(value:Array):void
 		{

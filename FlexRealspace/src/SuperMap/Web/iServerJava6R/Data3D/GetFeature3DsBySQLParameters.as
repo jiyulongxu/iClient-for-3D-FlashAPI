@@ -12,8 +12,13 @@ package SuperMap.Web.iServerJava6R.Data3D
 		 * 用于确认对象的类型
 		 */
 		public var CLASSNAME:String="GetFeature3DsBySQLParameters";
-		//存储此类的全称，需要和js端名称一样
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsBySQLParameters";
+		/**
+		 * 构造函数
+		 */
 		public function GetFeature3DsBySQLParameters(object:Object=null)
 		{
 			var key:Number;
@@ -36,6 +41,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 获取查询的 SQL 条件。
+		 * @return 返回查询的 SQL 条件
 		 */
 		public function get_filterParameter(): FilterParameter
 		{
@@ -50,6 +56,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 设置查询的 SQL 条件。
+		 * @param value 需要设置的查询的 SQL 条件
 		 */
 		public function set_filterParameter(value:FilterParameter):void
 		{

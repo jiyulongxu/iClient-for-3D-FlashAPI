@@ -3,6 +3,7 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.Enum;
 	/**
 	 * 三维图层数据类型枚举。
+	 * （模拟枚举，不可以初始化，对外开放）
 	 * 该类用于获得三维图层中每一个图层的具体数据类型。
 	 */
 	public class Layer3DDataType extends Enum
@@ -71,6 +72,12 @@ package SuperMap.Web.Realspace
 		 * 未知或者无效数据类型
 		 */
 		public static const UNKNOWNDATA:Number=-1;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function Layer3DDataType()
 		{
 			super();

@@ -3,6 +3,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 	import SuperMap.Web.Util.ClassBase;
 	/**
 	 * 查询事件参数。
+	 * （不可以初始化，对外开放）
 	 */
 	public class GetFeature3DsEventArgs extends ClassBase
 	{
@@ -10,11 +11,13 @@ package SuperMap.Web.iServerJava6R.Data3D
 		 * 用于确认对象的类型
 		 */
 		public var CLASSNAME:String="GetFeature3DsEventArgs";
-		//在js端对应的类的全名
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.iServerJava6R.Data3D.GetFeature3DsEventArgs";
 		
 		/**
-		 * 构造函数
+		 * 
 		 */
 		public function GetFeature3DsEventArgs(object:Object=null)
 		{
@@ -24,6 +27,7 @@ package SuperMap.Web.iServerJava6R.Data3D
 		}
 		/**
 		 * 获取查询结果。
+		 * @return 返回查询结果
 		 */
 		public function get_result(): GetFeature3DsResult
 		{

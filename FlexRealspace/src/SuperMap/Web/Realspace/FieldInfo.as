@@ -3,6 +3,7 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.ClassBase;
 	/**
 	 * 矢量数据集属性字段信息类。
+	 * （不可以初始化，对外开放）
 	 * 该类主要用于获取矢量图层选择集中元素的属性字段名称。该类不可创建。
 	 */
 	public class FieldInfo extends ClassBase
@@ -11,11 +12,17 @@ package SuperMap.Web.Realspace
 		 * 用于确认对象的类型
 		 */
 		public var CLASSNAME:String="FieldInfo";
-		//在js端对应的类的全名
+		/**
+		 * 对应js API的类全名
+		 */
 		private var REALSPACE_CLASSNAME:String="SuperMap.Web.Realspace.FieldInfo";
 		
 		/**
-		 * 构造函数
+		 * 
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
 		 */
 		public function FieldInfo(object:Object=null)
 		{
@@ -25,6 +32,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取属性字段别名。
+		 * @return 返回属性字段别名
 		 */
 		public function get_foreignName():String
 		{
@@ -39,6 +47,7 @@ package SuperMap.Web.Realspace
 		}
 		/**
 		 * 获取属性字段的名称。 
+		 * @return 返回属性字段的名称
 		 */
 		public function get_name():String
 		{

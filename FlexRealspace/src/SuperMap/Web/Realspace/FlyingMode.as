@@ -3,6 +3,7 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.Enum;
 	/**
 	 * 飞行模式枚举类。
+	 * （模拟枚举，不可以初始化，对外开放）
 	 * 该类用于设置飞行至指定地点的方式。
 	 */
 	public class FlyingMode extends Enum
@@ -55,6 +56,12 @@ package SuperMap.Web.Realspace
 		 * 镜头围绕指定地点旋转
 		 */
 		public static const ROTATE:Number=2;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function FlyingMode()
 		{
 			super();

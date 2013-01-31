@@ -3,6 +3,7 @@ package SuperMap.Web.Realspace
 	import SuperMap.Web.Util.Enum;
 	/**
 	 * 异常名称枚举类。
+	 * （模拟枚举，不可以初始化，对外开放）
 	 * 该类罗列了多种程序异常提示信息。
 	 */
 	public class ExceptionName extends Enum
@@ -59,6 +60,12 @@ package SuperMap.Web.Realspace
 		 * 系统OpenGL版本较低显示效果不被支持
 		 */
 		public static const RenderSystemIsNotSupported:Number=11;
+		/**
+		 * @example 以下例子示范了如何使用
+		 * <listing>
+		 * 
+		 * </listing>
+		 */
 		public function ExceptionName()
 		{
 			super();
