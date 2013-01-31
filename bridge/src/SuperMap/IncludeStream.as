@@ -18,6 +18,9 @@ package SuperMap
 		public function IncludeStream() 
 		{   
 		}
+		/**
+		 * 返回js文件里面代码的字符串形式
+		 */
 		public function toString():String
 		{
 			var microsoftAjaxStream:MicrosoftAjaxStream=new MicrosoftAjaxStream();

@@ -175,7 +175,7 @@ package SuperMap.Web.Realspace
 		 * 获取当前的飞行状态（停止，暂停，飞行中）。 
 		 * @return 返回当前的飞行状态
 		 */
-		public function get_flyStatus():FlyStatus
+		public function get_flyStatus():Number
 		{
 			var array:Object={
 				action:"FUNCTION",
@@ -184,7 +184,7 @@ package SuperMap.Web.Realspace
 					functionName:"get_flyStatus",
 					isReturn:true
 			};
-			return this.flexToJsCall(array) as FlyStatus;
+			return this.flexToJsCall(array) as Number;
 		}
 		
 		/**
