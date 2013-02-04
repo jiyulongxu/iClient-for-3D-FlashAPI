@@ -16,7 +16,7 @@ package SuperMap
 		 * 构造函数
 		 */
 		public function IncludeStream() 
-		{   
+		{
 		}
 		/**
 		 * 返回js文件里面代码的字符串形式

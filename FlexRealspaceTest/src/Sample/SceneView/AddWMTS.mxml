@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:Util="SuperMap.Web.Util.*"
+			   minWidth="955" minHeight="600" creationComplete="application1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import SuperMap.Web.Core.Color;
+			import SuperMap.Web.Core.Rectangle2D;
+			import SuperMap.Web.Core.Style3D;
+			import SuperMap.Web.Realspace.FlyingOperator;
+			import SuperMap.Web.Realspace.Layer3DWMTS;
+			import SuperMap.Web.Realspace.Layer3DWMTSServiceInfo;
+			import SuperMap.Web.Realspace.Layer3DWMTSServicesList;
+			import SuperMap.Web.UI.Controls.SceneControl;
+			import SuperMap.Web.Util.CallBackEvent;
+			
+			import mx.events.FlexEvent;
+			
+			private var m_sceneControl:SceneControl;
+			private var m_scene:SuperMap.Web.Realspace.Scene;
+			
+			//程序初始化所有控件之后
+			protected function application1_creationCompleteHandler(event:FlexEvent):void
+			{
+				//初始化三维场景控件实例
+				m_sceneControl=new SceneControl(mySceneControl,succeedCallBack,failedCallBack);
+			}
+			//控件初始化完成后的回调函数，初始化完成之后才能进行数据加载
+			private function succeedCallBack(event:CallBackEvent):void
+			{
+				m_scene=m_sceneControl.get_scene();
+				//指定WMTS图层的服务器地址 
+				var urlWMTS:String = "http://localhost:8090/iserver/services/map-world/wmts100"; 
+				//获取一个WMTS图层信息列表对象实例 
+				var serviceList:Layer3DWMTSServicesList = new SuperMap.Web.Realspace.Layer3DWMTSServicesList();
+				//
+				var bLoad:Boolean = serviceList.load(urlWMTS); 
+				//获取第一个图层服务信息
+				var layer3DWMTSServiceInfo:Layer3DWMTSServiceInfo = serviceList.get_item(0);
+				//获取图层服务名称
+				var layerName:String=layer3DWMTSServiceInfo.get_name();
+				//加载图层
+				var layer3DWMTS:Layer3DWMTS= m_scene.get_layer3Ds().addOGC(urlWMTS, layerName, SuperMap.Web.Realspace.Layer3DType.WMTS, true);				
+			}
+			//控件初始化失败后的回调函数
+			private function failedCallBack(event:CallBackEvent):void
+			{
+				trace("Realspace initialized failed!");
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<Util:SceneDiv id="mySceneControl" x="10" y="10" width="935" height="580">
+	</Util:SceneDiv>
+</s:Application>

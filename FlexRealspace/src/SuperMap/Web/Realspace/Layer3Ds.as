@@ -86,7 +86,7 @@ package SuperMap.Web.Realspace
 		 * @param addToHead 是否将图层添加到集合的顶部，默认值为 true，即添加最上层。
 		 * @return 返回三维图层。
 		 */
-		public function addOGC(strServerRootUrl:String,strLayerName:String,layer3DType:Number,addToHead:Boolean):Layer3D
+		public function addOGC(strServerRootUrl:String,strLayerName:String,layer3DType:Number,addToHead:Boolean):Layer3DWMTS
 		{
 			var realArgument:Array=[
 				strServerRootUrl+"$String",
@@ -102,7 +102,7 @@ package SuperMap.Web.Realspace
 					isReturn:true,
 					realArgument:realArgument
 			};
-			return this.flexToJsCall(array) as Layer3D;
+			return this.flexToJsCall(array) as Layer3DWMTS;
 		}
 		
 		

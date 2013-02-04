@@ -1,7 +1,7 @@
 package SuperMap.Web.Util
 {
 	
-	import SuperMap.IncludeStream;
+	//import SuperMap.IncludeStream;
 	import SuperMap.Web.Core.GeoLine3D;
 	import SuperMap.Web.Core.GeoRegion3D;
 	import SuperMap.Web.Realspace.EventObject;
@@ -58,29 +58,31 @@ package SuperMap.Web.Util
 		{
 			if(!ApplicationManager.isRegisterApp)
 			{
-				//初始化一个字符串形式的方法parseStringToJs，用于将字符串转换为js语言
-				var str:String = "function parseStringToJs(str){var oHead = document.getElementsByTagName('HEAD').item(0);";
-				str+="var oScript = document.createElement(\"script\");";
-				str+="oScript.language = \"javascript\";";
-				str+="oScript.type = \"text/javascript\";";
-				str+="oScript.id = \"test\";";
-				str+="oScript.defer = true;";
-				str+="oScript.text = str;";
-				str+="oHead.appendChild(oScript);}";
-				//调用window.eval方法
-				ExternalInterface.call("eval",str);
-				var includeStream:IncludeStream=new IncludeStream();
-				//获取js的字符串形式的源代码
-				var strey:String=includeStream.toString();
-				//使用正则表达式修改字符串
-				var char:RegExp = /\\/g;
-				strey = strey.replace(char,"\\\\");
-				//生成js的API
-				ExternalInterface.call("parseStringToJs",strey);
-				//初始化js调用as的入口方法initBridgeJsToFlex，最终饭方法的实现转给方法ApplicationManager.initBridgeJsToFlex
-				ExternalInterface.addCallback("initBridgeJsToFlex",ApplicationManager.initBridgeJsToFlex);
-				
-				ApplicationManager.isRegisterApp=true;
+//				//初始化一个字符串形式的方法parseStringToJs，用于将字符串转换为js语言
+//				var str:String = "function parseStringToJs(str){var oHead = document.getElementsByTagName('HEAD').item(0);";
+//				str+="var oScript = document.createElement(\"script\");";
+//				str+="oScript.language = \"javascript\";";
+//				str+="oScript.type = \"text/javascript\";";
+//				str+="oScript.id = \"test\";";
+//				str+="oScript.defer = true;";
+//				str+="oScript.text = str;";
+//				str+="oHead.appendChild(oScript);}";
+//				//调用window.eval方法
+//				ExternalInterface.call("eval",str);
+//				var includeStream:IncludeStream=new IncludeStream();
+//				//获取js的字符串形式的源代码
+//				var strey:String=includeStream.toString();
+//				//使用正则表达式修改字符串
+//				var char:RegExp = /\\/g;
+//				strey = strey.replace(char,"\\\\");
+//				//生成js的API
+//				ExternalInterface.call("parseStringToJs",strey);
+//				
+//				
+//				//初始化js调用as的入口方法initBridgeJsToFlex，最终饭方法的实现转给方法ApplicationManager.initBridgeJsToFlex
+//				ExternalInterface.addCallback("initBridgeJsToFlex",ApplicationManager.initBridgeJsToFlex);
+//				
+//				ApplicationManager.isRegisterApp=true;
 			}
 			
 		}

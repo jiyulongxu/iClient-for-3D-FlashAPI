@@ -41,6 +41,10 @@ package SuperMap.Web.Realspace
 		 */
 		public static const WMS:Number=11;
 		/**
+		 * WMTS 图层
+		 */
+		public static const WMTS:Number=12;
+		/**
 		 * @example 以下例子示范了如何使用
 		 * <listing>
 		 * 
