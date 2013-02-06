@@ -26,6 +26,7 @@
     <application path="Sample/Query/Measure.mxml"/>
     <application path="Sample/SceneView/Fly_Routes.mxml"/>
     <application path="Sample/SceneView/AddWMTS.mxml"/>
+    <application path="Sample/SceneView/AddWMS.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

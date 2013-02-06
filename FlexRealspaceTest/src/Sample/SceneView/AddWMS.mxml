@@ -10,9 +10,7 @@
 			import SuperMap.Web.Core.Rectangle2D;
 			import SuperMap.Web.Core.Style3D;
 			import SuperMap.Web.Realspace.FlyingOperator;
-			import SuperMap.Web.Realspace.Layer3DWMTS;
-			import SuperMap.Web.Realspace.Layer3DWMTSServiceInfo;
-			import SuperMap.Web.Realspace.Layer3DWMTSServicesList;
+			import SuperMap.Web.Realspace.Layer3DWMS;
 			import SuperMap.Web.UI.Controls.SceneControl;
 			import SuperMap.Web.Util.CallBackEvent;
 			
@@ -32,18 +30,15 @@
 			{
 				m_scene=m_sceneControl.get_scene();
 				//指定WMTS图层的服务器地址 
-				var urlWMTS:String = "http://localhost:8090/iserver/services/map-world/wmts100"; 
-				//获取一个WMTS图层信息列表对象实例 
-				var serviceList:Layer3DWMTSServicesList = new SuperMap.Web.Realspace.Layer3DWMTSServicesList();
-				//
-				var bLoad:Boolean = serviceList.load(urlWMTS); 
-				//获取第一个图层服务信息
-				var layer3DWMTSServiceInfo:Layer3DWMTSServiceInfo = serviceList.get_item(0);
-				//获取图层服务名称
-				var layerName:String=layer3DWMTSServiceInfo.get_name();
+				var WMSURL:String = "http://localhost:8090/iserver/services/map-world/wms111/World"; 
+				
 				//加载图层
-				var object:Object= m_scene.get_layer3Ds().addOGC(urlWMTS, layerName, SuperMap.Web.Realspace.Layer3DType.WMTS, true);				
-				var layer3DWMTS:Layer3DWMTS=object as Layer3DWMTS;
+				var object:Object= m_scene.get_layer3Ds().addOGC(WMSURL,"WMS", SuperMap.Web.Realspace.Layer3DType.WMS, true);
+				var layer3DWMS:Layer3DWMS=object as Layer3DWMS;
+				//获取所有的子图层名称
+				var subLayersNameList:Array = layer3DWMS.get_allSubLayers();
+				//获取所有显示的图层的名称
+				var visibleSubLayers:Array=layer3DWMS.get_visibleSubLayers();
 			}
 			//控件初始化失败后的回调函数
 			private function failedCallBack(event:CallBackEvent):void
